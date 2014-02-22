@@ -12,11 +12,27 @@ $(function() {
 			resetForm : true
 		})
 		.done(function(data){
+				var itemList = [];
 				var imageArray = data.SearchForImagesResult.Images;
+
 				$.each(imageArray,function(index, image){
-					console.log(image);
+					image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
+					itemList.push(image);
+				});
+
+				itemList.sort(function(a, b) {
+					return +a.date < +b.date ? -1 : 1;
+				});
+
+				var current_year = null;
+				itemList.forEach(function(image) {
+					if (current_year != image.date.getFullYear()) {
+						current_year = image.date.getFullYear();
+						addOnTimeline(createTextMarker(image.date.getFullYear()), 60, 30);
+					}
 					addOnTimeline(createSprite(image));
 				});
+
 			}
 		)
 		.fail(function(xhr){
@@ -48,7 +64,7 @@ $(function() {
 			if(i===parseInt(selectedVal)) all_selectable_date += '<option value="'+i+'-01-01" selected>'+i+'</option>';
 			else all_selectable_date += '<option value="'+i+'-01-01">'+i+'</option>';
 		}
-		$('#enddate-search').html(all_selectable_date);	
+		$('#enddate-search').html(all_selectable_date);
 	}
 	populateStartDate();
 	populateEndDate(current_year);
