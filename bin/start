@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# required arguments
+if [ -z "$1" ]; then
+  echo "Usage: start <environment>"
+  exit 0
+fi
+
+export ENV=$1
+FILEVERSION="wityu_${ENV}"
+
+node --wityu lib/app.js >> /tmp/$FILEVERSION.log 2>> /tmp/$FILEVERSION.error &
+echo $! > /tmp/$FILEVERSION.pid
+
+echo "start process -> $!"

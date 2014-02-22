@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# required arguments
+if [ -z "$1" ]; then
+  echo "Usage: stop <environment>"
+  exit 0
+fi
+
+export ENV=$1
+FILEVERSION="wityu_${ENV}"
+
+pid=`cat /tmp/${FILEVERSION}.pid`
+
+kill $pid
+
+echo "process stopped -> $pid"

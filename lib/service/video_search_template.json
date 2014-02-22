@@ -1,0 +1,32 @@
+{
+  "RequestHeader": {
+    "Token": "",
+    "CoordinationId": ""
+  },
+  "SearchForVideosRequestBody": {
+    "Filter": {
+      "AssetFamilies": ["Editorial"],
+      "ClipType": "",
+      "Collections": {
+        "Ids": [],
+        "Mode": ""
+      },
+      "ExcludeNudity": "",
+      "Formats": [],
+      "LicensingModels": [""],
+    },
+    "Language": "",
+    "Query": {
+      "AssetIds": [],
+      "KeywordIds": [],
+      "SearchPhrase": "",
+      "EntityUris": []
+
+    },
+    "ResultOptions": {
+      "ItemCount": 5,
+      "ItemStartNumber": 1,
+      "SortOrder": "Default"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "RequestHeader": {
+    "Token": ""
+  },
+  "SearchForImagesRequestBody": {
+    "Filter": {
+      "Collections":{
+        "Ids": [""],
+        "Mode": "exclude"
+      },
+      "EditorialSegments": [
+        ""
+      ],
+      "EditorialSources": {
+        "Ids": [""],
+        "Mode": ""
+      },
+      "ExcludeNudity": "",
+      "FileTypes": [
+        ""
+      ],
+      "GraphicStyles": [
+        ""
+      ],
+      "ImageFamilies": [
+        "editorial"
+      ],
+      "LicensingModels": [
+        ""
+      ],
+      "Orientations": [
+        ""
+      ],
+      "ProductOfferings": [
+        ""
+      ],
+      "Refinements": [
+        {
+          "Category": "",
+          "Id": ""
+        }
+      ]
+    },
+  "Language": "",
+  "Query": {
+    "DateCreatedRange": {
+      "StartDate": "2000-12-30",
+      "EndDate": "2014-01-08"
+    },
+    "SearchPhrase": "apple",
+    "KeywordIds": [
+      ""
+    ],
+    "EntityUris": [
+          ""
+        ],
+    "SpecificPersons": [
+      ""
+    ]
+  },
+  "ResultOptions": {
+    "IncludeKeywords": true,
+    "ItemCount": 5,
+    "ItemStartNumber": 1,
+    "RefinementOptionsSet": "",
+    "EditorialSortOrder": "",
+    "CreativeSortOrder": ""
+  }
+}
+}

@@ -1,0 +1,22 @@
+export ENV=local
+
+on_kill()
+{
+  # kill watch daemon
+  kill $WATCHID
+
+  echo "OK (≧∇≦)b"
+  exit 0
+}
+
+
+# Execute function on_die() receiving TERM signal
+#
+trap 'on_kill' SIGHUP SIGINT SIGTERM SIGQUIT
+
+# watch front-end resources
+grunt watch &
+WATCHID=$!
+
+# watch server resources
+node-supervisor -w lib/ -e js -- lib/app.js

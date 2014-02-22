@@ -1,0 +1,14 @@
+{
+  "env": "local",
+
+  "baseurl": "http://localhost:8000",
+
+  "logging": {
+    "level": "debug",
+    "line": true,
+    "stack": true,
+    "dump": false,
+    "debug_view": false
+  }
+
+}

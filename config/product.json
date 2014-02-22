@@ -1,0 +1,14 @@
+{
+  "env": "product",
+
+  "baseurl": "http://timeline.github.io",
+
+  "logging": {
+    "level": "warn",
+    "line": true,
+    "stack": true,
+    "dump": false,
+    "debug_view": false
+  }
+
+}

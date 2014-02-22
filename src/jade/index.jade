@@ -1,0 +1,54 @@
+html
+  head
+    title Back to the Future
+    script(src="//rawgithub.com/mrdoob/three.js/master/build/three.js")
+    script(src="http://stemkoski.github.io/Three.js/js/OrbitControls.js")
+    script(src="http://stemkoski.github.io/Three.js/js/KeyboardState.js")
+    script(src="//js.leapmotion.com/leap-0.4.1.min.js")
+
+    style.
+      body {
+        margin: 0;
+        font-family: Helvetica, Arial;
+      }
+      .ui {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        right: 0;
+      }
+      .ui h1,
+      .ui #form-search {
+        text-align: center;
+      }
+      .ui .spinner {
+        margin: 0 auto;
+        width: 32px;
+        height: 32px;
+        background: url('/public/images/loader.gif');
+      }
+      .ui .spinner.hidden {
+        display: none;
+      }
+
+      #stage canvas {
+        background: white;
+      }
+
+  body
+    .ui
+      .spinner.hidden
+      h1 Back to the Future
+      form(id='form-search')
+        input(type='search', placeholder='Steve Jobs', val='Steve Jobs', name='query')
+        input(type='hidden', name='itemperpage', value='100')
+      #result
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
+    script(src="/public/js/search.js")
+
+    script(src="public/js/leap.js")
+
+    #stage
+    script(src="/public/js/render.js")
+
