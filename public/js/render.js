@@ -90,6 +90,9 @@ function init() {
   scene = new THREE.Scene();
 
   scene.add(createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xffffff, opacity: 1}));
+  scene.add(createPlane({ width: 110, position: {z: 500, y: -2}, rotation: {x:Math.PI/2}, color: 0xeeeeee, opacity: 1}));
+  scene.add(createPlane({ width: 120, position: {z: 500, y: -4}, rotation: {x:Math.PI/2}, color: 0xdddddd, opacity: 1}));
+  scene.add(createPlane({ width: 135, position: {z: 500, y: -6}, rotation: {x:Math.PI/2}, color: 0xcccccc, opacity: 1}));
   // scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
 
 
