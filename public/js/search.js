@@ -4,19 +4,19 @@ $(function() {
 	var current_year = new Date().getFullYear();
 	$('#year-range-slider').slider({
 		range: true,
-		min: 1753,
+		// gettyimage has image created since 1753, but it makes our slider range too long, we change to later year.
+		min: 1900,
 		max: current_year,
 		values: [ 2000, 2012],
 		slide: function(event, ui){
 			// showing total year range
 			var text = ui.values[0] + ' - ' + ui.values[1];
-			console.log(text);
 			$('#startdate').val(ui.values[0]);
 			$('#enddate').val(ui.values[1]);
-			$('#year-range-text').val(text);
+			$('#year-range-text').text(text);
 		}
 	});
-	$( "#year-range-text" ).val( $( "#slider-range" ).slider( "values", 0 ) + ' - ' + $( "#slider-range" ).slider( "values", 1 ));
+	$( "#year-range-text" ).text( $( "#year-range-slider" ).slider( "values", 0 ) + ' - ' + $( "#year-range-slider" ).slider( "values", 1 ));
 
 	$('#form-search').on('submit', function(e) {
 		e.preventDefault();
@@ -26,10 +26,8 @@ $(function() {
 		var masterdata = $('#form-search').serializeObject();
 		var startdate = masterdata.startdate || '2000-01-01';
 		var enddate = masterdata.enddate || '2014-01-01';
-		console.log(startdate, enddate);
 		startdate = +startdate.split('-')[0];
 		enddate = +enddate.split('-')[0];
-		console.log(startdate,enddate);
 		var yearlist = [];
 		// generate each year
 		for (var i=0; i<=enddate-startdate; i++) {
