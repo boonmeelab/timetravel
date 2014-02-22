@@ -1,6 +1,19 @@
 $(function() {
 	var requestId = null;
-
+	// create slider with multihanders for year range search.
+	var current_year = new Date().getFullYear();
+	$('#year-range-slider').slider({
+		range: true,
+		min: 1753,
+		max: current_year,
+		values: [ 2000, 2012],
+		slide: function(event, ui){
+			// showing total year range
+			var text = ui.values[0] + ' - ' + ui.values[1];
+			console.log(text);
+			$('#year-range-text').val(text);
+		}
+	})
 	$('#form-search').on('submit', function(e) {
 		e.preventDefault();
 		$('.spinner').removeClass('hidden');
@@ -76,7 +89,6 @@ $(function() {
 	$('#form-search').trigger('submit');
 
 	// adding date list staring from 1753
-	var current_year = new Date().getFullYear();
 	function populateStartDate(){
 		var all_selectable_date = '';
 		for(var i=1753;i<=current_year;i++){

@@ -1,6 +1,7 @@
 html
   head
     title Back to the Future
+    link(rel="stylesheet", href="/public/css/jquery-ui-1.10.4.custom.css")
     script(src="//rawgithub.com/mrdoob/three.js/master/build/three.js")
     script(src="http://stemkoski.github.io/Three.js/js/OrbitControls.js")
     script(src="http://stemkoski.github.io/Three.js/js/KeyboardState.js")
@@ -88,6 +89,14 @@ html
         margin: 0 0 10px;
         font-size: 13px;
       }
+      #year-range-slider {
+        width: 30%;
+      }
+      #year-range-text{
+        font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+        color: #FE4830;
+        margin: 0 0 10px;
+      }
 
   body
     .ui
@@ -99,12 +108,15 @@ html
         select(id='startdate-search', name='startdate')
         select(id='enddate-search', name='enddate')
         input(type='hidden', name='sortby', value='MostPopular')
+      center 
+        #year-range-slider
+        #year-range-text
       .spinner.hidden
 
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
+    script(src="/public/js/jquery-ui-1.10.4.custom.min.js")
     script(src="/public/js/search.js")
-
     script(src="public/js/leap.js")
 
     #stage
