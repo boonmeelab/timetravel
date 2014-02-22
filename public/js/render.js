@@ -8,6 +8,7 @@ var speed = 0;
 var acc = 0.97;
 
 var keyboard = new KeyboardState();
+var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
 
 var objectList = [];
 var dist = 0;
@@ -15,7 +16,7 @@ var dist = 0;
 init();
 animate();
 
-const FADEOUT_DISTANCE = 40;
+const FADEOUT_DISTANCE = 30;
 
 function compareImageDate(a,b){
   var dateA = a.imgObj.DateCreated;
@@ -25,7 +26,6 @@ function compareImageDate(a,b){
 
 function addOnTimeline(obj, d1, d2) {
   objectList.push(obj);
-  //console.log(obj);
   scene.add(obj);
   dist -= d1 || 60;
   obj.position.z = dist;
@@ -33,9 +33,23 @@ function addOnTimeline(obj, d1, d2) {
 }
 function resetTimeline() {
   objectList.forEach(function(obj) {
+    deallocMesh(obj);
     scene.remove(obj);
   });
   dist = 60;
+}
+
+function deallocMesh(obj) {
+  if (obj instanceof THREE.Mesh) {
+    obj.texture && obj.texture.dispose();
+    obj.material && obj.material.dispose();
+    obj.geometry && obj.geometry.dispose();
+    delete obj.img;
+  } else if (obj.children) {
+    obj.children.forEach(function(o) {
+      deallocMesh(o);
+    });
+  }
 }
 
 function init() {
@@ -43,8 +57,8 @@ function init() {
   window.addEventListener( 'resize', onWindowResize, false );
 
   renderer = new THREE.WebGLRenderer( { alpha: true } );
-  renderer.setClearColor( 0xffffff, 1);
-  // renderer.setClearColor( 0x000000, 0);
+  // renderer.setClearColor( 0xeeeeee, 1);
+  renderer.setClearColor( 0x000000, 0);
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.getElementById( 'stage' ).appendChild( renderer.domElement );
 
@@ -70,7 +84,7 @@ function init() {
 
   scene = new THREE.Scene();
 
-  scene.add(createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xeeeeee, opacity: .5}));
+  scene.add(createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xffffff, opacity: 1}));
   // scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
 
 
@@ -90,6 +104,27 @@ function init() {
   // addOnTimeline(createSprite( '/public/images/test1.jpg'));
   // addOnTimeline(createSprite( '/public/images/test3.jpg'));
 
+  // initialize object to perform world/screen calculations
+  projector = new THREE.Projector();
+
+  // when the mouse moves, call the given function
+  document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+}
+
+function onDocumentMouseMove( event )
+{
+  // the following line would stop any other event handler from firing
+  // (such as the mouse's TrackballControls)
+  // event.preventDefault();
+
+  // update sprite position
+  updateInfoBox({ x: event.clientX, y: event.clientY });
+  // sprite1.position.set( event.clientX, event.clientY - 20, 0 );
+
+  // update the mouse variable
+  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 }
 
 
@@ -150,6 +185,8 @@ function createSprite(imgObj, params) {
   sprite.position.y = h/2;
   sprite.name = params.name || '';
   sprite.imgObj = imgObj;
+  sprite.img = img;
+  sprite.texture = texture;
   return sprite;
 }
 
@@ -157,14 +194,14 @@ function createTextMarker(str) {
   var group = new THREE.Object3D();
   var text = createText( str, {
       fontsize: 32,
-      fontface: "Helvetica",
+      fontface: 'Arial Rounded MT Bold',
       backgroundColor: {r:49, g:140, b:231, a:1.0},//0x318ce7
       borderColor: {r:49, g:140, b:231, a:1.0}//{r:0, g:0, b:255, a:1.0}
     } );
-  text.position.x = 40;//60;
+  text.position.x = 37;
   text.position.y = -10;
   text.position.z = 0;
-  var line = createPlane({ width: 100, height: 5, position: { x: 0, y: .1 }, rotation: { x: Math.PI/2 }, color: 0xffffff, opacity: .5});
+  var line = createPlane({ width: 100, height: 5, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x92dde0});
 
   group.add(text);
   group.add(line);
@@ -247,9 +284,67 @@ function animate() {
 
   keyUpdate();
 
+  mouseUpdate();
+
   controls.update();
 
   worldUpdate();
+}
+
+function mouseUpdate() {
+
+  // find intersections
+
+  // create a Ray with origin at the mouse position
+  //   and direction into the scene (camera direction)
+  var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+  projector.unprojectVector( vector, camera );
+  var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+  // create an array containing all objects in the scene with which the ray intersects
+  var intersects = ray.intersectObjects( scene.children );
+
+  // INTERSECTED = the object in the scene currently closest to the camera
+  //    and intersected by the Ray projected from the mouse position
+
+  // if there is one (or more) intersections
+  if ( intersects.length > 0 )
+  {
+    // if the closest object intersected is not the currently stored intersection object
+    if ( intersects[ 0 ].object != INTERSECTED )
+    {
+        // restore previous intersection object (if it exists) to its original color
+      if ( INTERSECTED ) {
+        updateInfoBox({
+          show: false
+        });
+      }
+      // store reference to closest object as current intersection object
+      INTERSECTED = intersects[ 0 ].object;
+      // update sprite position
+      if (INTERSECTED.imgObj) {
+        updateInfoBox({
+          show: true,
+          title: INTERSECTED.imgObj.Title,
+          artist: INTERSECTED.imgObj.Artist,
+          caption: INTERSECTED.imgObj.Caption
+        });
+      }
+    }
+  }
+  else // there are no intersections
+  {
+    // restore previous intersection object (if it exists) to its original color
+    if ( INTERSECTED ) {
+      updateInfoBox({
+        show: false
+      });
+    }
+    // remove previous intersection object reference
+    //     by setting current intersection object to "nothing"
+    INTERSECTED = null;
+  }
+
 }
 
 function keyUpdate() {
@@ -262,10 +357,11 @@ function keyUpdate() {
   if ( keyboard.pressed("down") )
     speed -= 0.4;
 
-  if ( keyboard.pressed("W") )
-    camera.translateY(1);
-  if ( keyboard.pressed("S") )
-    camera.translateY(-1);
+  // if ( keyboard.pressed("W") )
+  //   camera.translateY(1);
+  // if ( keyboard.pressed("S") )
+  //   camera.translateY(-1);
+
   // if ( keyboard.pressed("A") )
   //   camera.target.position.copy( new THREE.Vector3(0, 100, 0) );
     // camera.lookAt( camera.target.add(new THREE.Vector3(0,1,0) ) );
