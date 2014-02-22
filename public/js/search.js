@@ -11,9 +11,13 @@ $(function() {
 			// showing total year range
 			var text = ui.values[0] + ' - ' + ui.values[1];
 			console.log(text);
+			$('#startdate').val(ui.values[0]);
+			$('#enddate').val(ui.values[1]);
 			$('#year-range-text').val(text);
 		}
-	})
+	});
+	$( "#year-range-text" ).val( $( "#slider-range" ).slider( "values", 0 ) + ' - ' + $( "#slider-range" ).slider( "values", 1 ));
+
 	$('#form-search').on('submit', function(e) {
 		e.preventDefault();
 		$('.spinner').removeClass('hidden');
@@ -22,8 +26,10 @@ $(function() {
 		var masterdata = $('#form-search').serializeObject();
 		var startdate = masterdata.startdate || '2000-01-01';
 		var enddate = masterdata.enddate || '2014-01-01';
+		console.log(startdate, enddate);
 		startdate = +startdate.split('-')[0];
 		enddate = +enddate.split('-')[0];
+		console.log(startdate,enddate);
 		var yearlist = [];
 		// generate each year
 		for (var i=0; i<=enddate-startdate; i++) {
@@ -89,7 +95,7 @@ $(function() {
 	$('#form-search').trigger('submit');
 
 	// adding date list staring from 1753
-	function populateStartDate(){
+	/*function populateStartDate(){
 		var all_selectable_date = '';
 		for(var i=1753;i<=current_year;i++){
 			if(i===2000) all_selectable_date += '<option value="'+i+'-01-01" selected>'+i+'</option>';
@@ -116,7 +122,7 @@ $(function() {
 			$('#enddate-search option[value="'+selected_startdate+'-01-01"]').prop('selected', true);
 		}
 		populateEndDate(selected_enddate);
-	});
+	});*/
 
 });
 

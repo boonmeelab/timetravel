@@ -105,8 +105,8 @@ html
         input(type='search', placeholder='Macintosh', value='Macintosh', name='query')
         input(type='hidden', name='itemperpage', value='20')
         br
-        select(id='startdate-search', name='startdate')
-        select(id='enddate-search', name='enddate')
+        input(type='hidden',id='startdate',name='startdate')
+        input(type='hidden',id='enddate',name='enddate')
         input(type='hidden', name='sortby', value='MostPopular')
       center 
         #year-range-slider
