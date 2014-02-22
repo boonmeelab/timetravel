@@ -56,7 +56,7 @@ $(function() {
 					if (reqId != requestId) return;
 
 						var itemList = [];
-						var imageArray = data.SearchForImagesResult.Images;
+						var imageArray = data.SearchForImagesResult&&data.SearchForImagesResult.Images||[];
 
 						$.each(imageArray,function(index, image){
 							image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
@@ -67,7 +67,9 @@ $(function() {
 							return +a.date < +b.date ? -1 : 1;
 						});
 
+						// year mark
 						addOnTimeline(createTextMarker(year));
+						// photos
 						itemList.forEach(function(image) {
 							var w = +image.MaxImageResolutionWidth || 50;
 							var h = +image.MaxImageResolutionHeight || 50;

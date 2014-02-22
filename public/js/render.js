@@ -10,7 +10,7 @@ var acc = 0.97;
 var keyboard = new KeyboardState();
 var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
 
-var objectList = [];
+var objectList;
 var dist = 0;
 
 init();
@@ -25,17 +25,22 @@ function compareImageDate(a,b){
 }
 
 function addOnTimeline(obj, d1, d2) {
-  objectList.push(obj);
-  scene.add(obj);
+  objectList.add(obj);
   dist -= d1 || 60;
   obj.position.z = dist;
   dist -= d2 || 60;
 }
 function resetTimeline() {
-  objectList.forEach(function(obj) {
-    deallocMesh(obj);
-    scene.remove(obj);
-  });
+  if (objectList) {
+    objectList.children.forEach(function(obj) {
+      deallocMesh(obj);
+      scene.remove(obj);
+    });
+    scene.remove(objectList);
+  }
+  // create new object group
+  objectList = new THREE.Object3D();
+  scene.add(objectList);
   dist = 60;
 }
 
@@ -371,23 +376,27 @@ function worldUpdate() {
   speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
 
-  // move objects
-  objectList.forEach(function(obj) {
-    obj.position.z += speed;
-    var opacity = obj.position.z <= 0+fadeout_offset ? 1 : Math.max(0, 1-(obj.position.z-fadeout_offset)/FADEOUT_DISTANCE);
+  if (objectList) {
 
-    var meshes;
-    if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry)
-      meshes = [obj];
-    else if (obj.children)
-      meshes = obj.children;
+    // move objects
+    objectList.position.z += speed;
+    objectList.children.forEach(function(obj) {
+      var posz =  obj.position.z + objectList.position.z;
+      var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
 
-    meshes.forEach(function(mesh) {
-      var material;
-      if (mesh.material)
-        mesh.material.opacity = opacity;
-       if (mesh.materials)
-        mesh.materials[0].opacity = opacity;
+      var meshes;
+      if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry)
+        meshes = [obj];
+      else if (obj.children)
+        meshes = obj.children;
+
+      meshes.forEach(function(mesh) {
+        var material;
+        if (mesh.material)
+          mesh.material.opacity = opacity;
+         if (mesh.materials)
+          mesh.materials[0].opacity = opacity;
+      });
     });
-  });
+  }
 }
