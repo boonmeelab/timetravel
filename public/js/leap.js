@@ -3,14 +3,16 @@ var posx = 0;
 var scale = 1;
 var speed = 0; // share with render.js
 var acc = 0.97; // share with render.js
-
+var handState={};
+var walkState='UP';
+var walkCount=0;
 Leap.loop({enableGestures: true}, function(frame) {
   var ids = {};
   var hands = frame.hands;
   var pointables = frame.pointables;
   var gestures = frame.gestures;
 
-  function filterFakeHands(){
+  /*function filterFakeHands(){
     if(hands=== undefined) return;
     for (var id = 0;id != hands.length;) {
       var hand = hands[id];
@@ -31,8 +33,8 @@ Leap.loop({enableGestures: true}, function(frame) {
   if(hands.length>0){
     console.log(hands.length);
 
-  }
-
+  }*/
+  //if(gestures.length>0) console.log(gestures.length);
   gestures && gestures.forEach(function(gesture) {
     switch (gesture.type) {
       case 'circle':
@@ -41,6 +43,41 @@ Leap.loop({enableGestures: true}, function(frame) {
         // {"center":[127.807,275.053,-26.6459],"normal":[0.112556,-0.856655,0.503461],"progress":0.926437,"radius":9.54046,"id":1926,"handIds":[16],"pointableIds":[56],"duration":275478,"state":"stop","type":"circle"}
         speed += 0.02 * getGestureCircleDirection(frame, gesture) * range(gesture.radius, [5,100], [1,10]);
         break;
+      case 'swipe':
+        //console.log(gesture);
+        gHandIds = gesture.handIds;
+        //console.log(gesture.state, gHandIds);
+        for(var i=0, handCount = gHandIds.length; i < handCount;i++){
+          //console.log(gHandIds[i]);
+          var hand = frame.hand(gHandIds[i]);
+          if(!(gHandIds[i] in handState)){
+            if(gesture.state==='start'){
+              var pos = gesture.position;
+              handState[gHandIds]={ state: 'start', position: pos};
+            }
+          }else {
+            if(gesture.state==='stop' && handState[gHandIds].state==='start'){
+              //console.log(gHandIds[i]);
+              if(handState[gHandIds].position > gesture.position){
+                if(walkState==='DOWN'){
+                  walkCount++;
+                  walkState='UP';
+                }
+              }else{
+                if(walkState==='UP'){
+                  walkCount++;
+                  walkState='DOWN';
+                }
+              }
+              console.log(walkCount);
+              delete handState[gHandIds[i]];
+            }
+          }
+          //console.log(frame.hand(gHandIds[i]).translation());
+        }
+
+        //console.log(hands);
+        //console.log(Math.abs(gesture.translation()[0]))
       // case 'swipe':
       //   // {"startPosition":[172.027,265.269,-33.5395],"position":[32.7692,194.899,-80.61],"direction":[-0.854482,-0.431789,-0.288824],"speed":2358.3,"id":1937,"handIds":[71],"pointableIds":[72],"duration":0,"state":"start","type":"swipe"}
       //   // {"startPosition":[172.027,265.269,-33.5395],"position":[8.47858,183.49,-77.0836],"direction":[-0.893017,-0.417907,-0.166956],"speed":2064.49,"id":1937,"handIds":[71],"pointableIds":[72],"duration":9947,"state":"update","type":"swipe"}

@@ -4,20 +4,6 @@ $(function() {
 		$('.spinner').removeClass('hidden');
 		resetTimeline();
 
-<<<<<<< HEAD
-		$.ajax({
-			url: '/search',
-			type: 'GET',
-			dataType: 'json',
-			data: $('#form-search').serialize(),
-			resetForm : true
-		})
-		.done(function(data){
-				var imageArray = data.SearchForImagesResult.Images;
-				$.each(imageArray,function(index, image){
-					//console.log(image);
-					addOnTimeline(createSprite(image));
-=======
 		var masterdata = $('#form-search').serializeObject();
 		var startdate = masterdata.startdate || '2000-01-01';
 		var enddate = masterdata.enddate || '2014-01-01';
@@ -67,7 +53,6 @@ $(function() {
 				.always(function() {
 					$('.spinner').addClass('hidden');
 					cb();
->>>>>>> master
 				});
 			},
 
