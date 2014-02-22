@@ -4,43 +4,62 @@ $(function() {
 		$('.spinner').removeClass('hidden');
 		resetTimeline();
 
-		$.ajax({
-			url: '/search',
-			type: 'GET',
-			dataType: 'json',
-			data: $('#form-search').serialize(),
-			resetForm : true
-		})
-		.done(function(data){
-				var itemList = [];
-				var imageArray = data.SearchForImagesResult.Images;
+		var masterdata = $('#form-search').serializeObject();
+		var startdate = masterdata.startdate || '2000-01-01';
+		var enddate = masterdata.enddate || '2014-01-01';
+		startdate = +startdate.split('-')[0];
+		enddate = +enddate.split('-')[0];
+		var yearlist = [];
+		// generate each year
+		for (var i=0; i<=enddate-startdate; i++) {
+			yearlist.push(startdate+i);
+		}
 
-				$.each(imageArray,function(index, image){
-					image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
-					itemList.push(image);
-				});
+		async.mapSeries(yearlist,
+			function(year, cb) {
+				var data = clone(masterdata);
+				data.startdate = year+'-01-01';
+				data.enddate = year+'-12-31';
+				$.ajax({
+					url: '/search',
+					type: 'GET',
+					dataType: 'json',
+					data: data,
+					resetForm : true
+				})
+				.done(function(data){
+						var itemList = [];
+						var imageArray = data.SearchForImagesResult.Images;
 
-				itemList.sort(function(a, b) {
-					return +a.date < +b.date ? -1 : 1;
-				});
+						$.each(imageArray,function(index, image){
+							image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
+							itemList.push(image);
+						});
 
-				var current_year = null;
-				itemList.forEach(function(image) {
-					if (current_year != image.date.getFullYear()) {
-						current_year = image.date.getFullYear();
-						addOnTimeline(createTextMarker(image.date.getFullYear()), 60, 30);
+						itemList.sort(function(a, b) {
+							return +a.date < +b.date ? -1 : 1;
+						});
+
+						addOnTimeline(createTextMarker(year));
+						itemList.forEach(function(image) {
+							addOnTimeline(createSprite(image));
+						});
+
 					}
-					addOnTimeline(createSprite(image));
+				)
+				.fail(function(xhr){
+					console.error(xhr);
+				})
+				.always(function() {
+					$('.spinner').addClass('hidden');
+					cb();
 				});
+			},
 
+			function(err, result) {
+				// no op
 			}
 		)
-		.fail(function(xhr){
-				console.log(xhr);
-		})
-		.always(function() {
-			$('.spinner').addClass('hidden');
-		});
 	});
 
 	// submit once on pageload
@@ -59,7 +78,6 @@ $(function() {
 	function populateEndDate(selectedVal){
 		var selected_startdate = $('#startdate-search option:selected').val();
 		var all_selectable_date='';
-		console.log("Val", selectedVal);
 		for(var i=parseInt(selected_startdate); i<=current_year;i++){
 			if(i===parseInt(selectedVal)) all_selectable_date += '<option value="'+i+'-01-01" selected>'+i+'</option>';
 			else all_selectable_date += '<option value="'+i+'-01-01">'+i+'</option>';
@@ -79,3 +97,24 @@ $(function() {
 	});
 
 });
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+};

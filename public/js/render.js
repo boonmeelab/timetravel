@@ -27,15 +27,15 @@ function addOnTimeline(obj, d1, d2) {
   objectList.push(obj);
   //console.log(obj);
   scene.add(obj);
-  dist -= d1 || 30;
+  dist -= d1 || 60;
   obj.position.z = dist;
-  dist -= d2 || 30;
+  dist -= d2 || 60;
 }
 function resetTimeline() {
   objectList.forEach(function(obj) {
     scene.remove(obj);
   });
-  dist = 0;
+  dist = 60;
 }
 
 function init() {
@@ -51,7 +51,7 @@ function init() {
   //
 
   camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 3000 );
-  camera.position.set(0, 100, 150);
+  camera.position.set(0, 80, 150);
   // camera.translateY(-50);
   // camera.rotation.x = 1;
   // camera.target = new THREE.Vector3( 0, -50, 50);
@@ -164,7 +164,7 @@ function createTextMarker(str) {
   text.position.x = 40;//60;
   text.position.y = -10;
   text.position.z = 0;
-  var line = createPlane({ width: 100, height: .5, position: { x: 0, y: .1 }, rotation: { x: Math.PI/2 }, color: 0xffffff, opacity: .5});
+  var line = createPlane({ width: 100, height: 5, position: { x: 0, y: .1 }, rotation: { x: Math.PI/2 }, color: 0xffffff, opacity: .5});
 
   group.add(text);
   group.add(line);
@@ -273,6 +273,7 @@ function keyUpdate() {
   //   camera.lookAt( camera.target.add(new THREE.Vector3(0,-1,0) ) );
 }
 
+var fadeout_offset = FADEOUT_DISTANCE/2;
 function worldUpdate() {
   speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
@@ -280,7 +281,7 @@ function worldUpdate() {
   // move objects
   objectList.forEach(function(obj) {
     obj.position.z += speed;
-    var opacity = obj.position.z <= 0 ? 1 : Math.max(0, 1-(obj.position.z)/FADEOUT_DISTANCE);
+    var opacity = obj.position.z <= 0+fadeout_offset ? 1 : Math.max(0, 1-(obj.position.z-fadeout_offset)/FADEOUT_DISTANCE);
 
     var meshes;
     if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry)
