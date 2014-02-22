@@ -59,7 +59,6 @@ $(function() {
 						var imageArray = data.SearchForImagesResult.Images;
 
 						$.each(imageArray,function(index, image){
-							// console.log(image);
 							image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
 							itemList.push(image);
 						});
@@ -70,7 +69,13 @@ $(function() {
 
 						addOnTimeline(createTextMarker(year));
 						itemList.forEach(function(image) {
-							addOnTimeline(createSprite(image));
+							var w = +image.MaxImageResolutionWidth || 50;
+							var h = +image.MaxImageResolutionHeight || 50;
+							var ratio = Math.min(w, h)/Math.max(w, h);
+							var size = 60;
+							w2 = w > h ? size : size * ratio;
+							h2 = w > h ? size * ratio : size;
+							addOnTimeline(createSprite(image, {width: w2, height: h2}));
 						});
 
 				})

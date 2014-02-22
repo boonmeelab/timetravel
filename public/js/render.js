@@ -167,9 +167,7 @@ function createSprite(imgObj, params) {
   var sprite;
   var w = params.width || 50;
   var h = params.height || 50;
-  // if (typeof src === 'string') {
-  //   texture = THREE.ImageUtils.loadTexture(src);
-  // } else if (src instanceof Image) {
+
   var img = new Image();
   img.onload = function () {
     texture.needsUpdate = true;
@@ -177,7 +175,6 @@ function createSprite(imgObj, params) {
   texture = new THREE.Texture(img);
   img.src = imgObj.UrlThumb;
   texture.needsUpdate = true;
-  // }
 
   var material = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true } );
   sprite = new THREE.Sprite( material );
