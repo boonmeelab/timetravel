@@ -15,49 +15,51 @@ var dist = 0;
 init();
 animate();
 
-const FADEOUT_DISTANCE = 20;
+const FADEOUT_DISTANCE = 40;
 
 function compareImageDate(a,b){
   var dateA = a.imgObj.DateCreated;
   var dateB = b.imgObj.DateCreated;
-  
+
 }
 
-function addOnTimeline(obj, d) {
+function addOnTimeline(obj, d1, d2) {
   objectList.push(obj);
   //console.log(obj);
   scene.add(obj);
+  dist -= d1 || 60;
   obj.position.z = dist;
-  dist -= d || 60;
+  dist -= d2 || 60;
 }
 function resetTimeline() {
   objectList.forEach(function(obj) {
     scene.remove(obj);
   });
-  dist = 0;
+  dist = 60;
 }
 
 function init() {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer( { alpha: true } );
   renderer.setClearColor( 0xffffff, 1);
+  // renderer.setClearColor( 0x000000, 0);
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.getElementById( 'stage' ).appendChild( renderer.domElement );
 
   //
 
-  camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
-  // camera.position.y = 120;
-  camera.position.set(0, 70, 200);
-  camera.rotation.x = 1
+  camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 3000 );
+  camera.position.set(0, 80, 150);
+  // camera.translateY(-50);
+  // camera.rotation.x = 1;
   // camera.target = new THREE.Vector3( 0, -50, 50);
   // camera.up = new THREE.Vector3(0,0,1);
-  camera.lookAt(new THREE.Vector3( 100, 100, 0));
+  // camera.lookAt(new THREE.Vector3( 100, 100, 0));
 
-  camera.updateMatrix();
-  camera.updateProjectionMatrix();
+  // camera.updateMatrix();
+  // camera.updateProjectionMatrix();
 
   // // EVENTS
   // THREEx.WindowResize(renderer, camera);
@@ -68,8 +70,8 @@ function init() {
 
   scene = new THREE.Scene();
 
-  scene.add(createPlane({ position: {z: -1480}, rotation: {x:Math.PI/2}, color: 0xeeeeee}));
-  scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
+  scene.add(createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xeeeeee, opacity: .5}));
+  // scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
 
 
   // Add objects
@@ -109,8 +111,8 @@ function createPlane(params) {
   params.position = params.position || {};
   params.rotation = params.rotation || {};
 
-  var geometry = new THREE.PlaneGeometry( params.width || 150, params.height || 3000 );
-  var material = new THREE.MeshBasicMaterial( {color: params.color || 0xff0000, side: THREE.DoubleSide, transparent: true} );
+  var geometry = new THREE.PlaneGeometry( params.width || 100, params.height || 3000 );
+  var material = new THREE.MeshBasicMaterial( {color: params.color || 0xff0000, side: THREE.DoubleSide, transparent: true, opacity: params.opacity || 1} );
   mesh = new THREE.Mesh( geometry, material );
 
   mesh.position.x = params.position.x || 0;
@@ -126,25 +128,28 @@ function createPlane(params) {
 
 function createSprite(imgObj, params) {
   params = params || {};
-  var texture
-
+  var texture;
+  var sprite;
+  var w = params.width || 50;
+  var h = params.height || 50;
   // if (typeof src === 'string') {
   //   texture = THREE.ImageUtils.loadTexture(src);
   // } else if (src instanceof Image) {
-    var img = new Image();
-    var texture = new THREE.Texture(img);
-    img.onload = function () { texture.needsUpdate = true; };
-    img.src = imgObj.UrlThumb;
+  var img = new Image();
+  img.onload = function () {
     texture.needsUpdate = true;
+  };
+  texture = new THREE.Texture(img);
+  img.src = imgObj.UrlThumb;
+  texture.needsUpdate = true;
   // }
 
   var material = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true } );
-  var sprite = new THREE.Sprite( material );
-  sprite.scale.set(50,50,1);
-  sprite.position.y = 20;
+  sprite = new THREE.Sprite( material );
+  sprite.scale.set(w, h, 1);
+  sprite.position.y = h/2;
   sprite.name = params.name || '';
   sprite.imgObj = imgObj;
-  //console.log(sprite);
   return sprite;
 }
 
@@ -153,11 +158,13 @@ function createTextMarker(str) {
   var text = createText( str, {
       fontsize: 32,
       fontface: "Helvetica",
-      borderColor: {r:0, g:0, b:255, a:1.0}
+      backgroundColor: {r:49, g:140, b:231, a:1.0},//0x318ce7
+      borderColor: {r:49, g:140, b:231, a:1.0}//{r:0, g:0, b:255, a:1.0}
     } );
-  text.position.x = 120;
+  text.position.x = 40;//60;
+  text.position.y = -10;
   text.position.z = 0;
-  var line = createPlane({ width: 150, height: .5, position: { x: 0, y: .5 }, color: 0x333333});
+  var line = createPlane({ width: 100, height: 5, position: { x: 0, y: .1 }, rotation: { x: Math.PI/2 }, color: 0xffffff, opacity: .5});
 
   group.add(text);
   group.add(line);
@@ -266,15 +273,15 @@ function keyUpdate() {
   //   camera.lookAt( camera.target.add(new THREE.Vector3(0,-1,0) ) );
 }
 
+var fadeout_offset = FADEOUT_DISTANCE/2;
 function worldUpdate() {
   speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
 
   // move objects
   objectList.forEach(function(obj) {
-    // debugger;
     obj.position.z += speed;
-    var opacity = obj.position.z <= -FADEOUT_DISTANCE ? 1 : Math.max(0, 1-(obj.position.z+FADEOUT_DISTANCE)/FADEOUT_DISTANCE);
+    var opacity = obj.position.z <= 0+fadeout_offset ? 1 : Math.max(0, 1-(obj.position.z-fadeout_offset)/FADEOUT_DISTANCE);
 
     var meshes;
     if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry)
