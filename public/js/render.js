@@ -17,8 +17,15 @@ animate();
 
 const FADEOUT_DISTANCE = 20;
 
+function compareImageDate(a,b){
+  var dateA = a.imgObj.DateCreated;
+  var dateB = b.imgObj.DateCreated;
+  
+}
+
 function addOnTimeline(obj, d) {
   objectList.push(obj);
+  //console.log(obj);
   scene.add(obj);
   obj.position.z = dist;
   dist -= d || 60;
@@ -117,7 +124,7 @@ function createPlane(params) {
   return mesh;
 }
 
-function createSprite(src, params) {
+function createSprite(imgObj, params) {
   params = params || {};
   var texture
 
@@ -127,7 +134,7 @@ function createSprite(src, params) {
     var img = new Image();
     var texture = new THREE.Texture(img);
     img.onload = function () { texture.needsUpdate = true; };
-    img.src = src;
+    img.src = imgObj.UrlThumb;
     texture.needsUpdate = true;
   // }
 
@@ -136,6 +143,7 @@ function createSprite(src, params) {
   sprite.scale.set(50,50,1);
   sprite.position.y = 20;
   sprite.name = params.name || '';
+  sprite.imgObj = imgObj;
   //console.log(sprite);
   return sprite;
 }

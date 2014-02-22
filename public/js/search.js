@@ -14,7 +14,8 @@ $(function() {
 		.done(function(data){
 				var imageArray = data.SearchForImagesResult.Images;
 				$.each(imageArray,function(index, image){
-					addOnTimeline(createSprite(image.UrlThumb));
+					console.log(image);
+					addOnTimeline(createSprite(image));
 				});
 			}
 		)
