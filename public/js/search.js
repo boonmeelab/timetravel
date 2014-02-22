@@ -1,4 +1,6 @@
 $(function() {
+	var requestId = null;
+
 	$('#form-search').on('submit', function(e) {
 		e.preventDefault();
 		$('.spinner').removeClass('hidden');
@@ -15,8 +17,14 @@ $(function() {
 			yearlist.push(startdate+i);
 		}
 
+		var reqId = requestId = Math.random();
 		async.mapSeries(yearlist,
 			function(year, cb) {
+				if (reqId != requestId) {
+					// console.log('Cancel expired request')
+					return cb();
+				}
+
 				var data = clone(masterdata);
 				data.startdate = year+'-01-01';
 				data.enddate = year+'-12-31';
@@ -28,10 +36,13 @@ $(function() {
 					resetForm : true
 				})
 				.done(function(data){
+					if (reqId != requestId) return;
+
 						var itemList = [];
 						var imageArray = data.SearchForImagesResult.Images;
 
 						$.each(imageArray,function(index, image){
+							// console.log(image);
 							image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
 							itemList.push(image);
 						});
@@ -45,8 +56,7 @@ $(function() {
 							addOnTimeline(createSprite(image));
 						});
 
-					}
-				)
+				})
 				.fail(function(xhr){
 					console.error(xhr);
 				})
