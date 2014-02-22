@@ -7,7 +7,7 @@ $(function() {
 		// gettyimage has image created since 1753, but it makes our slider range too long, we change to later year.
 		min: 1900,
 		max: current_year,
-		values: [ 2000, 2012],
+		values: [ 1981, 2012],
 		slide: function(event, ui){
 			// showing total year range
 			var text = ui.values[0] + ' - ' + ui.values[1];
@@ -24,7 +24,7 @@ $(function() {
 		resetTimeline();
 
 		var masterdata = $('#form-search').serializeObject();
-		var startdate = masterdata.startdate || '2000-01-01';
+		var startdate = masterdata.startdate || '1981-01-01';
 		var enddate = masterdata.enddate || '2014-01-01';
 		startdate = +startdate.split('-')[0];
 		enddate = +enddate.split('-')[0];
