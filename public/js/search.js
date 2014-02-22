@@ -68,7 +68,7 @@ $(function() {
 						});
 
 						// year mark
-						addOnTimeline(createTextMarker(year));
+						addOnTimeline(createTextMarker(year), 90, 30);
 						// photos
 						itemList.forEach(function(image) {
 							var w = +image.MaxImageResolutionWidth || 50;

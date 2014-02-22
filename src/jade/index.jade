@@ -27,7 +27,9 @@ html
         text-align: center;
       }
       .ui .spinner {
-        margin: 0 auto;
+        display: inline-block;
+        position: absolute;
+        margin: 15px 10px 0;
         width: 32px;
         height: 32px;
         background: url('/public/images/loader.gif');
@@ -102,9 +104,10 @@ html
         z-index: 2;
       }
       #year-range-text{
+        font-size: 24px;
         font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
         color: #FE4830;
-        margin: 0 0 10px;
+        margin: 10px 0 10px;
       }
 
   body
@@ -112,15 +115,14 @@ html
       h1 <strong>Back</strong> to the Future
       form(id='form-search')
         input(type='search', placeholder='Macintosh', value='Macintosh', name='query')
+        .spinner.hidden
         input(type='hidden', name='itemperpage', value='20')
-        br
         input(type='hidden',id='startdate',name='startdate')
         input(type='hidden',id='enddate',name='enddate')
         input(type='hidden', name='sortby', value='MostPopular')
-      center 
+      center
         #year-range-slider
         #year-range-text
-      .spinner.hidden
 
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
