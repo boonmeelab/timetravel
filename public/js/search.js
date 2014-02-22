@@ -99,6 +99,9 @@ $(function() {
 	// submit once on pageload
 	$('#form-search').trigger('submit');
 
+	// focus on search box
+	$('input[name="query"]').trigger('focus');
+
 	// adding date list staring from 1753
 	/*function populateStartDate(){
 		var all_selectable_date = '';

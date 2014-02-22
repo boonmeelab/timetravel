@@ -178,7 +178,7 @@ function createSprite(imgObj, params) {
     texture.needsUpdate = true;
   };
   texture = new THREE.Texture(img);
-  img.src = imgObj.UrlThumb;
+  img.src = imgObj.UrlPreview;
   texture.needsUpdate = true;
 
   var material = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true } );
@@ -296,6 +296,7 @@ function animate() {
 function mouseUpdate() {
 
   // find intersections
+  var targetList = objectList&&objectList.children || [];
 
   // create a Ray with origin at the mouse position
   //   and direction into the scene (camera direction)
@@ -304,7 +305,7 @@ function mouseUpdate() {
   var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
 
   // create an array containing all objects in the scene with which the ray intersects
-  var intersects = ray.intersectObjects( scene.children );
+  var intersects = ray.intersectObjects( targetList );
 
   // INTERSECTED = the object in the scene currently closest to the camera
   //    and intersected by the Ray projected from the mouse position
