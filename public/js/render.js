@@ -136,7 +136,7 @@ function createSprite(src, params) {
   sprite.scale.set(50,50,1);
   sprite.position.y = 20;
   sprite.name = params.name || '';
-  console.log(sprite);
+  //console.log(sprite);
   return sprite;
 }
 

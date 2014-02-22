@@ -43,7 +43,16 @@ html
         padding: 10px;
         outline: none;
       }
-
+      select[name='startdate'] {
+        font-size: 16px;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+      select[name='enddate'] {
+        font-size: 16px;
+        border: 1px solid #ccc;
+        outline: none;
+      }
       #stage canvas {
         background: white;
       }
@@ -54,6 +63,9 @@ html
       form(id='form-search')
         input(type='search', placeholder='Steve Jobs', value='iPod', name='query')
         input(type='hidden', name='itemperpage', value='100')
+        br
+        select(id='startdate-search', name='startdate')
+        select(id='enddate-search', name='enddate')
       .spinner.hidden
 
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
