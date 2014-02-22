@@ -10,6 +10,29 @@ Leap.loop({enableGestures: true}, function(frame) {
   var pointables = frame.pointables;
   var gestures = frame.gestures;
 
+  function filterFakeHands(){
+    if(hands=== undefined) return;
+    for (var id = 0;id != hands.length;) {
+      var hand = hands[id];
+      var roll = hand.roll();
+      var pitch = hand.pitch();
+      var yaw = hand.yaw();
+      if(roll>0.7 || roll < -0.7){
+        hands.splice(id,1);
+        continue;
+      }else if(pitch>0.7 || pitch < -0.5){
+        hands.splice(id,1);
+        continue;
+      }
+      id++;
+    }
+  }
+  filterFakeHands();
+  if(hands.length>0){
+    console.log(hands.length);
+
+  }
+
   gestures && gestures.forEach(function(gesture) {
     switch (gesture.type) {
       case 'circle':

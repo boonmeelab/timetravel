@@ -14,7 +14,7 @@ $(function() {
 		.done(function(data){
 				var imageArray = data.SearchForImagesResult.Images;
 				$.each(imageArray,function(index, image){
-					console.log(image);
+					//console.log(image);
 					addOnTimeline(createSprite(image));
 				});
 			}
