@@ -13,7 +13,7 @@ html
       }
       .ui {
         position: absolute;
-        bottom: 50px;
+        bottom: 30px;
         left: 0;
         right: 0;
       }
@@ -28,7 +28,20 @@ html
         background: url('/public/images/loader.gif');
       }
       .ui .spinner.hidden {
-        display: none;
+        visibility: hidden;
+      }
+      .ui h1 {
+        font-size: 40px;
+        font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+        margin: 20px 0;
+      }
+      input[name='query'] {
+        font-size: 24px;
+        line-height: 1.5;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        outline: none;
       }
 
       #stage canvas {
@@ -37,12 +50,12 @@ html
 
   body
     .ui
-      .spinner.hidden
       h1 Back to the Future
       form(id='form-search')
-        input(type='search', placeholder='Steve Jobs', val='Steve Jobs', name='query')
+        input(type='search', placeholder='Steve Jobs', value='iPod', name='query')
         input(type='hidden', name='itemperpage', value='100')
-      #result
+      .spinner.hidden
+
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
     script(src="/public/js/search.js")
