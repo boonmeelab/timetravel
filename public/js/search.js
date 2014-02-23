@@ -16,7 +16,7 @@ $(function() {
 			$('#year-range-text').text(text);
 		}
 	});
-	$( "#year-range-text" ).text( $( "#year-range-slider" ).slider( "values", 0 ) + ' - ' + $( "#year-range-slider" ).slider( "values", 1 ));
+	$('#year-range-text').text( $('#year-range-slider').slider('values', 0 ) + ' - ' + $('#year-range-slider').slider('values', 1 ));
 
 	$('#form-search').on('submit', function(e) {
 		e.preventDefault();
@@ -24,18 +24,18 @@ $(function() {
 		resetTimeline();
 
 		var masterdata = $('#form-search').serializeObject();
-		var startdate = masterdata.startdate || '1981-01-01';
-		var enddate = masterdata.enddate || '2014-01-01';
+		var startdate = masterdata.startdate || $('#year-range-slider').slider('values',0)+'-01-01';
+		var enddate = masterdata.enddate || $('#year-range-slider').slider('values',1)+'-01-01';
 		startdate = +startdate.split('-')[0];
 		enddate = +enddate.split('-')[0];
 		var yearlist = [];
 		// generate each year
 		var range = enddate-startdate;
-		var step = range/5;
+		var step = parseInt(range/5);
 		for (var i=0; i<enddate-startdate; i+=step) {
 			yearlist.push(startdate+i);
 		}
-		yearlist.push(enddate);
+		//yearlist.push(enddate);
 		var itemCount = step*5;
 
 		var reqId = requestId = Math.random();
@@ -48,7 +48,11 @@ $(function() {
 
 				var data = clone(masterdata);
 				data.startdate = year+'-01-01';
-				data.enddate = year+'-12-31';
+				var nextstep = year+step-1;
+				if(nextstep<enddate)
+					data.enddate = nextstep+'-12-31';
+				else data.enddate = enddate + '-12-31';
+				console.log(data.startdate, data.enddate);
 				data.itemperpage = itemCount;
 				$.ajax({
 					url: '/search',
