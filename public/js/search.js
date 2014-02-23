@@ -7,7 +7,7 @@ $(function() {
 		// gettyimage has image created since 1753, but it makes our slider range too long, we change to later year.
 		min: 1900,
 		max: current_year,
-		values: [ 1981, 2012],
+		values: [ 1970, 2012],
 		slide: function(event, ui){
 			// showing total year range
 			var text = ui.values[0] + ' - ' + ui.values[1];
@@ -38,7 +38,7 @@ $(function() {
 		//yearlist.push(enddate);
 		// itemCount can be only --> 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75
 		// limited by gettyimage api
-		var itemCount = step*6;
+		var itemCount = step*5;
 		var limitedCount = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75]
 		for( var i =0, limitedLength = limitedCount.length;i<limitedLength;i++){
 			if(limitedCount[i]>=itemCount){
