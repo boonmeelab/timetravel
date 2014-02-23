@@ -30,9 +30,13 @@ $(function() {
 		enddate = +enddate.split('-')[0];
 		var yearlist = [];
 		// generate each year
-		for (var i=0; i<=enddate-startdate; i++) {
+		var range = enddate-startdate;
+		var step = range/5;
+		for (var i=0; i<enddate-startdate; i+=step) {
 			yearlist.push(startdate+i);
 		}
+		yearlist.push(enddate);
+		var itemCount = step*5;
 
 		var reqId = requestId = Math.random();
 		async.mapSeries(yearlist,
@@ -45,6 +49,7 @@ $(function() {
 				var data = clone(masterdata);
 				data.startdate = year+'-01-01';
 				data.enddate = year+'-12-31';
+				data.itemperpage = itemCount;
 				$.ajax({
 					url: '/search',
 					type: 'GET',
