@@ -36,8 +36,16 @@ $(function() {
 			yearlist.push(startdate+i);
 		}
 		//yearlist.push(enddate);
-		var itemCount = step*10;
-
+		// itemCount can be only --> 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75
+		// limited by gettyimage api
+		var itemCount = step*6;
+		var limitedCount = [1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75]
+		for( var i =0, limitedLength = limitedCount.length;i<limitedLength;i++){
+			if(limitedCount[i]>=itemCount){
+				itemCount=limitedCount[i];
+				break;
+			}
+		}
 		var reqId = requestId = Math.random();
 		var year_mark = null;
 		async.mapSeries(yearlist,
