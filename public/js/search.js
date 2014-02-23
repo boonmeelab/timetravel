@@ -36,9 +36,10 @@ $(function() {
 			yearlist.push(startdate+i);
 		}
 		//yearlist.push(enddate);
-		var itemCount = step*5;
+		var itemCount = step*10;
 
 		var reqId = requestId = Math.random();
+		var year_mark = null;
 		async.mapSeries(yearlist,
 			function(year, cb) {
 				if (reqId != requestId) {
@@ -69,7 +70,7 @@ $(function() {
 
 						$.each(imageArray,function(index, image){
 							var date = /\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated);
-							if (date && date[1]) image.date = new Date(date[1]);
+							if (date && date[1]) image.date = new Date(+date[1]);
 							itemList.push(image);
 						});
 
@@ -77,10 +78,15 @@ $(function() {
 							return +a.date < +b.date ? -1 : 1;
 						});
 
-						// year mark
-						addOnTimeline(createTextMarker(year), 90, 30);
 						// photos
 						itemList.forEach(function(image) {
+							var year = image.date&&image.date.getFullYear();
+							// year mark
+							if (year != year_mark) {
+								year_mark = year;
+								addOnTimeline(createTextMarker(year), 90, 30);
+							}
+
 							var w = +image.MaxImageResolutionWidth || 50;
 							var h = +image.MaxImageResolutionHeight || 50;
 							var ratio = Math.min(w, h)/Math.max(w, h);
