@@ -68,7 +68,8 @@ $(function() {
 						var imageArray = data.SearchForImagesResult&&data.SearchForImagesResult.Images||[];
 
 						$.each(imageArray,function(index, image){
-							image.date = new Date(+/\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated)[1]);
+							var date = /\/Date\(([0-9]+).*\)\//g.exec(image.DateCreated);
+							if (date && date[1]) image.date = new Date(date[1]);
 							itemList.push(image);
 						});
 
