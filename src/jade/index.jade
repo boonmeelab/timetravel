@@ -37,14 +37,16 @@ html
       .ui .spinner.hidden {
         visibility: hidden;
       }
-      .ui h1 {
+      h1 {
+        position: absolute;
+        z-index: 100;
         font-size: 40px;
-        margin: 20px 0;
+        margin: 10px 20px;
         color: #92DDE0;
         font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
         text-shadow: 1px 2px 0 #70C2D1;
       }
-      .ui h1 strong {
+      h1 strong {
         color: #FE6860;
         text-shadow: 1px 2px 0 #FD2500;
       }
@@ -111,8 +113,8 @@ html
       }
 
   body
+    h1 <strong>Back</strong> to the Future
     .ui
-      h1 <strong>Back</strong> to the Future
       form(id='form-search')
         input(type='search', placeholder='Computer', value='Computer', name='query')
         .spinner.hidden
