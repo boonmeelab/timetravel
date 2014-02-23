@@ -90,7 +90,7 @@ $(function() {
 						itemList.forEach(function(image) {
 							var year = image.date&&image.date.getFullYear();
 							// year mark
-							if (year != year_mark) {
+							if (typeof year === 'number' && year != year_mark) {
 								year_mark = year;
 								addOnTimeline(createTextMarker(year), 90, 30);
 							}
