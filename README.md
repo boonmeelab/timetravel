@@ -24,3 +24,6 @@ Search history
         $ bin/stop product
 
 5. Access locally at `http://localhost:8000`
+
+Noted: Right now, we are only supporting chrome and you need to disable web security to make 'Back to the Future' work.
+To disable in macosx, please type `open -a /Applications/Google\ Chrome --args --disable-web-security
