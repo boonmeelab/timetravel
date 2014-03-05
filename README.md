@@ -1,6 +1,9 @@
-# Back to the Future
+# Time Travel
 
 Browse history of places, people or things. Photo search are powered by [Getty Images Connect API](http://api.gettyimages.com/). For more fun, attach your [Leap Motion](https://www.leapmotion.com/) and control it by hand.
+
+This is the winner project from [Photo Hack Day 5](http://photohackday.org). Previously called *Back to the Future*.
+
 
 ## Requirements
 
@@ -39,8 +42,8 @@ There are 2 gestures supported:
 
 ### Keyboard
 
-  `Up` Move forward
-  `Down` Move backward
+  - `Up` Move forward
+  - `Down` Move backward
 
 ## Note
 
