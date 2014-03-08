@@ -75,7 +75,7 @@ function init() {
   // camera.rotation.x = 1;
   // camera.target = new THREE.Vector3( 0, -50, 50);
   // camera.up = new THREE.Vector3(0,0,1);
-  // camera.lookAt(new THREE.Vector3( 100, 100, 0));
+   camera.lookAt(new THREE.Vector3( 0, 0, 0));
 
   // camera.updateMatrix();
   // camera.updateProjectionMatrix();
@@ -85,7 +85,7 @@ function init() {
   // THREEx.FullScreen.bindKey({ charCode : 'f'.charCodeAt(0) });
 
   // CONTROLS
-  controls = new THREE.OrbitControls( camera, renderer.domElement );
+  //controls = new THREE.OrbitControls( camera, renderer.domElement );
 
   scene = new THREE.Scene();
 
@@ -289,9 +289,9 @@ function animate() {
 
   keyUpdate();
 
-  mouseUpdate();
+  //mouseUpdate();
 
-  controls.update();
+  //controls.update();
 
   worldUpdate();
 }
@@ -381,18 +381,25 @@ function worldUpdate() {
   if (Math.abs(speed) < 0.001) speed = 0;
 
   if (objectList) {
-
     // move objects
     objectList.position.z += speed;
+    
+    var boxShowObj;
     objectList.children.forEach(function(obj) {
       var posz =  obj.position.z + objectList.position.z;
       var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
-
+      var updatebox = posz >= 0 && posz < 10 ;
+      if(updatebox && obj.imgObj){
+        boxShowObj = obj;
+        //console.log(boxShowObj);
+      }
       var meshes;
-      if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry)
+      if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry){
         meshes = [obj];
-      else if (obj.children)
+      }else if (obj.children){
         meshes = obj.children;
+        
+      }
 
       meshes.forEach(function(mesh) {
         var material;
@@ -402,5 +409,13 @@ function worldUpdate() {
           mesh.materials[0].opacity = opacity;
       });
     });
+    if(boxShowObj){
+      updateInfoBox({
+        show: true,
+        title: boxShowObj.imgObj.Title,
+        artist: boxShowObj.imgObj.Artist,
+        caption: boxShowObj.imgObj.Caption
+      });
+    }
   }
 }

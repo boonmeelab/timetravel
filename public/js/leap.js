@@ -122,5 +122,4 @@ function getGestureCircleDirection(frame, gesture) {
 }
 
 function render() {
-
 }
