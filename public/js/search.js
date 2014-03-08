@@ -61,7 +61,7 @@ $(function() {
 				var data = clone(masterdata);
 				data.startdate = year+'-01-01';
 				var nextstep = year+step-1;
-				if(nextstep<enddate)
+				if(nextstep<endyear)
 					data.enddate = nextstep+'-12-31';
 				else data.enddate = endyear + '-12-31';
 				console.log(data.startdate, data.enddate);
