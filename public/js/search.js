@@ -24,18 +24,21 @@ $(function() {
 		resetTimeline();
 
 		var masterdata = $('#form-search').serializeObject();
-		var startdate = masterdata.startdate || $('#year-range-slider').slider('values',0)+'-01-01';
-		var enddate = masterdata.enddate || $('#year-range-slider').slider('values',1)+'-01-01';
-		startdate = +startdate.split('-')[0];
-		enddate = +enddate.split('-')[0];
+		masterdata.startdate = masterdata.startdate || $('#year-range-slider').slider('values',0)+'-01-01';
+		masterdata.enddate = masterdata.enddate || $('#year-range-slider').slider('values',1)+'-01-01';
+		var startyear = +masterdata.startdate.split('-')[0];
+		var endyear = +masterdata.enddate.split('-')[0];
 		var yearlist = [];
 		// generate each year
-		var range = enddate-startdate;
+		var range = endyear-startyear;
 		var step = parseInt(range/5);
-		for (var i=0; i<enddate-startdate; i+=step) {
-			yearlist.push(startdate+i);
+		for (var i=0; i<endyear-startyear; i+=step) {
+			yearlist.push(startyear+i);
 		}
-		//yearlist.push(enddate);
+
+		// event hit: search submit
+		ga('send', 'event', 'search', 'submit', values(masterdata));
+
 		// itemCount can be only --> 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 25, 30, 50, 60, 75
 		// limited by gettyimage api
 		var itemCount = step*5;
@@ -63,6 +66,7 @@ $(function() {
 				else data.enddate = enddate + '-12-31';
 				console.log(data.startdate, data.enddate);
 				data.itemperpage = itemCount;
+
 				$.ajax({
 					url: '/search',
 					type: 'GET',
@@ -144,6 +148,10 @@ $.fn.serializeObject = function()
     });
     return o;
 };
+
+function values(obj) {
+  return typeof obj !== 'object' ? '' : Object.keys(obj).map(function(key){ return obj[key]; }).join(',');
+}
 
 function clone(obj) {
   return JSON.parse(JSON.stringify(obj));
