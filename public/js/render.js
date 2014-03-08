@@ -391,8 +391,19 @@ function worldUpdate() {
     // move objects
     objectList.position.z += speed;
 
+    // bounce on min/max distance
+    if (objectList.position.z < 0) {
+      objectList.position.z = 0;
+      speed *= -0.5;
+    }
+    if (objectList.position.z > -dist-40) {
+      objectList.position.z = -dist-40;
+      speed *= -0.2;
+    }
+
     var boxShowObj;
     objectList.children.forEach(function(obj) {
+      // check if object near viewer
       var posz =  obj.position.z + objectList.position.z;
       var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
       var updatebox = posz > INFOBOX_RANGE_CENTER_POSITION-infobox_offset && posz < INFOBOX_RANGE_CENTER_POSITION+infobox_offset ;
@@ -405,9 +416,9 @@ function worldUpdate() {
         meshes = [obj];
       }else if (obj.children){
         meshes = obj.children;
-
       }
 
+      // fade out
       meshes.forEach(function(mesh) {
         var material;
         if (mesh.material)
@@ -416,6 +427,8 @@ function worldUpdate() {
           mesh.materials[0].opacity = opacity;
       });
     });
+
+    // show photo info
     if(boxShowObj){
       updateInfoBox({
         show: true,
