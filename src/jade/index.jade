@@ -111,9 +111,86 @@ html
         color: #FE4830;
         margin: 10px 0 10px;
       }
+      .guidelineDialog{
+        text-align: center;
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        z-index: 99999;
+        background: rgba(0,0,0,0.8);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+      }
+      .guidelineDialog:target{
+        opacity:1;
+        pointer-events: auto;
+        display:
+      }
+      .guidelineDialog > div {
+        width: 70%;
+        height: 500px;
+        position: relative;
+        margin: 10% auto;
+        padding: 5px 20px 13px 20px;
+        border-radius: 10px;
+        background: #fff;
+      }
+      #controlGuide {
+        margin: 0 auto;
+        max-width: 100%;
+        background-color: #aaa;
+      }
+      #controlGuideLeft {
+        float:left;
+        width:46%;
+        background-color: #FFFFFF;
+      }
+      #controlGuideRight {
+        float: right;
+        width: 46%;
+        background-color: #FFFFFF;
+      }
+      .close {
+        color: #DCDCDC;
+        line-height: 25px;
+        position: absolute;
+        right: 0px;
+        text-align: center;
+        top: 0px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .close:hover { color: #808080; }
 
   body
     h1 <strong>Time</strong> Travel
+    #guidelineModal.guidelineDialog
+      div
+        a.close(href="#close") x 
+        h2 Guideline
+        p Welcome to Time Travel - a time machine on the Internet!
+        p Time Travel will take you to explore the world of history related to your interesting topics. Try to search what you want to know and also specify the range of years you want to go through a time space.
+        p You can control our time travel by using a keyboard or  leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
+        #controlGuide
+          #controlGuideLeft
+            center
+              h4 Keyboard
+              p Move forward
+              p Move backward
+          #controlGuideRight
+            center
+              h4 Leap Motion
+              p Move forward, Move backward
+              p Walk to the future!
+
     .ui
       form(id='form-search')
         input(type='search', placeholder='Computer', value='Computer', name='query')
@@ -125,6 +202,8 @@ html
       center
         #year-range-slider
         #year-range-text
+        a(href="#guidelineModal") Take a tour
+
 
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
