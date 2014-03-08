@@ -17,14 +17,8 @@ init();
 animate();
 
 const FADEOUT_DISTANCE = 30;
-const INFOBOX_RANGE_CENTER_POSITION = 15;
-const INFOBOX_RANGE_DISTANCE = 70;
-
-function compareImageDate(a,b){
-  var dateA = a.imgObj.DateCreated;
-  var dateB = b.imgObj.DateCreated;
-
-}
+const INFOBOX_RANGE_CENTER_POSITION = 10;
+const INFOBOX_RANGE_DISTANCE = 76;
 
 function addOnTimeline(obj, d1, d2) {
   objectList.add(obj);
@@ -299,10 +293,11 @@ function worldUpdate() {
       // check if object near viewer
       var posz =  obj.position.z + objectList.position.z;
       var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
+      // check if needed to update info box 
       var updatebox = posz > INFOBOX_RANGE_CENTER_POSITION-infobox_offset && posz < INFOBOX_RANGE_CENTER_POSITION+infobox_offset ;
+      // keep object to send image info to show in info box later at the bottom of this function
       if(updatebox && obj.imgObj){
         boxShowObj = obj;
-        //console.log(boxShowObj);
       }
       var meshes;
       if (obj instanceof THREE.Sprite || obj instanceof THREE.Geometry){
@@ -321,7 +316,7 @@ function worldUpdate() {
       });
     });
 
-    // show photo info
+    // show image info
     if(boxShowObj){
       updateInfoBox({
         show: true,
@@ -329,10 +324,6 @@ function worldUpdate() {
         artist: boxShowObj.imgObj.Artist,
         caption: boxShowObj.imgObj.Caption
       });
-    }else{
-      updateInfoBox({
-        show: false
-      })
     }
   }
 }
