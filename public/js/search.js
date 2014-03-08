@@ -101,7 +101,7 @@ $(function() {
 							var size = 60;
 							w2 = w > h ? size : size * ratio;
 							h2 = w > h ? size * ratio : size;
-							addOnTimeline(createSprite(image, {width: w2, height: h2}));
+							addOnTimeline(createSprite(image, {width: w2, height: h2, service: 'getty'}));
 						});
 
 				})

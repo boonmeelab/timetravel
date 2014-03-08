@@ -183,7 +183,11 @@ function createSprite(imgObj, params) {
     texture.needsUpdate = true;
   };
   texture = new THREE.Texture(img);
-  img.src = imgObj.UrlPreview;
+  // user image proxy if needed
+  if (params.service)
+    img.src = '/photo/'+params.service+'/'+encodeURIComponent(imgObj.UrlPreview);
+  else
+    img.src = imgObj.UrlPreview
   texture.needsUpdate = true;
 
   var material = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true } );
@@ -386,7 +390,7 @@ function worldUpdate() {
   if (objectList) {
     // move objects
     objectList.position.z += speed;
-    
+
     var boxShowObj;
     objectList.children.forEach(function(obj) {
       var posz =  obj.position.z + objectList.position.z;
@@ -401,7 +405,7 @@ function worldUpdate() {
         meshes = [obj];
       }else if (obj.children){
         meshes = obj.children;
-        
+
       }
 
       meshes.forEach(function(mesh) {
