@@ -69,25 +69,13 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.getElementById( 'stage' ).appendChild( renderer.domElement );
 
-  //
-
   camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 3000 );
   camera.position.set(0, 80, 150);
   // camera.translateY(-50);
   // camera.rotation.x = 1;
   // camera.target = new THREE.Vector3( 0, -50, 50);
   // camera.up = new THREE.Vector3(0,0,1);
-   camera.lookAt(new THREE.Vector3( 0, 0, 0));
-
-  // camera.updateMatrix();
-  // camera.updateProjectionMatrix();
-
-  // // EVENTS
-  // THREEx.WindowResize(renderer, camera);
-  // THREEx.FullScreen.bindKey({ charCode : 'f'.charCodeAt(0) });
-
-  // CONTROLS
-  //controls = new THREE.OrbitControls( camera, renderer.domElement );
+  camera.lookAt(new THREE.Vector3( 0, 0, 0));
 
   scene = new THREE.Scene();
 
@@ -96,23 +84,6 @@ function init() {
   scene.add(createPlane({ width: 120, position: {z: 500, y: -4}, rotation: {x:Math.PI/2}, color: 0xdddddd, opacity: 1}));
   scene.add(createPlane({ width: 135, position: {z: 500, y: -6}, rotation: {x:Math.PI/2}, color: 0xcccccc, opacity: 1}));
   // scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
-
-
-  // Add objects
-  // addOnTimeline(createTextMarker( "December 2013 " ), 30);
-  // addOnTimeline(createSprite( '/public/images/test3.jpg', { name: 'test3'}));
-  // addOnTimeline(createSprite( '/public/images/test1.jpg', { name: 'test1'}));
-  // addOnTimeline(createSprite( '/public/images/test2.jpg', { name: 'test2'}));
-
-  // addOnTimeline(createTextMarker( "January 2014 " ), 30);
-  // addOnTimeline(createSprite( '/public/images/test1.jpg'));
-  // addOnTimeline(createSprite( '/public/images/test2.jpg'));
-  // addOnTimeline(createSprite( '/public/images/test3.jpg'));
-
-  // addOnTimeline(createTextMarker( "February 2014 " ), 30);
-  // addOnTimeline(createSprite( '/public/images/test2.jpg'));
-  // addOnTimeline(createSprite( '/public/images/test1.jpg'));
-  // addOnTimeline(createSprite( '/public/images/test3.jpg'));
 
   // initialize object to perform world/screen calculations
   projector = new THREE.Projector();
@@ -288,97 +259,19 @@ function animate() {
 
   requestAnimationFrame( animate );
 
-  // cube.rotation.x += 0.005;
-  // cube.rotation.y += 0.01;
-
   renderer.render( scene, camera );
 
   keyUpdate();
 
-  //mouseUpdate();
-
-  //controls.update();
-
   worldUpdate();
 }
 
-function mouseUpdate() {
-
-  // find intersections
-  var targetList = objectList&&objectList.children || [];
-
-  // create a Ray with origin at the mouse position
-  //   and direction into the scene (camera direction)
-  var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
-  projector.unprojectVector( vector, camera );
-  var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-
-  // create an array containing all objects in the scene with which the ray intersects
-  var intersects = ray.intersectObjects( targetList );
-
-  // INTERSECTED = the object in the scene currently closest to the camera
-  //    and intersected by the Ray projected from the mouse position
-
-  // if there is one (or more) intersections
-  if ( intersects.length > 0 )
-  {
-    // if the closest object intersected is not the currently stored intersection object
-    if ( intersects[ 0 ].object != INTERSECTED )
-    {
-        // restore previous intersection object (if it exists) to its original color
-      if ( INTERSECTED ) {
-        updateInfoBox({
-          show: false
-        });
-      }
-      // store reference to closest object as current intersection object
-      INTERSECTED = intersects[ 0 ].object;
-      // update sprite position
-      if (INTERSECTED.imgObj) {
-        updateInfoBox({
-          show: true,
-          title: INTERSECTED.imgObj.Title,
-          artist: INTERSECTED.imgObj.Artist,
-          caption: INTERSECTED.imgObj.Caption
-        });
-      }
-    }
-  }
-  else // there are no intersections
-  {
-    // restore previous intersection object (if it exists) to its original color
-    if ( INTERSECTED ) {
-      updateInfoBox({
-        show: false
-      });
-    }
-    // remove previous intersection object reference
-    //     by setting current intersection object to "nothing"
-    INTERSECTED = null;
-  }
-
-}
-
 function keyUpdate() {
-
   keyboard.update();
-
-
   if ( keyboard.pressed("up") )
     speed += 0.4;
   if ( keyboard.pressed("down") )
     speed -= 0.4;
-
-  // if ( keyboard.pressed("W") )
-  //   camera.translateY(1);
-  // if ( keyboard.pressed("S") )
-  //   camera.translateY(-1);
-
-  // if ( keyboard.pressed("A") )
-  //   camera.target.position.copy( new THREE.Vector3(0, 100, 0) );
-    // camera.lookAt( camera.target.add(new THREE.Vector3(0,1,0) ) );
-  // if ( keyboard.pressed("D") )
-  //   camera.lookAt( camera.target.add(new THREE.Vector3(0,-1,0) ) );
 }
 
 var fadeout_offset = FADEOUT_DISTANCE/2;
