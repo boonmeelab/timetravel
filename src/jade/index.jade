@@ -106,9 +106,7 @@ html
         width: 30%;
         font-size: 13px;
       }
-      #guidelink{
-        text-decoration: none;
-      }
+
       .ui-slider .ui-slider-handle{
         cursor: default;
         height: 1.2em;
@@ -121,6 +119,10 @@ html
         font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
         color: #FE4830;
         margin: 10px 0 10px;
+      }
+      #guidelink{
+        text-decoration: none;
+        color: #FE4830;
       }
       .guidelineDialog{
         text-align: center;
@@ -141,7 +143,6 @@ html
       .guidelineDialog:target{
         opacity:1;
         pointer-events: auto;
-        display:
       }
       .guidelineDialog > div {
         width: 70%;
@@ -150,12 +151,7 @@ html
         margin: 10% auto;
         padding: 5px 20px 13px 20px;
         border-radius: 10px;
-        background: #fff;
-      }
-      #controlGuide {
-        margin: 0 auto;
-        max-width: 100%;
-        background-color: #aaa;
+        background: #FFFFFF;
       }
       #controlGuideLeft {
         float:left;
@@ -178,7 +174,6 @@ html
         text-decoration: none;
         font-weight: bold;
       }
-
       .close:hover { color: #808080; }
 
   body
@@ -190,17 +185,16 @@ html
         p Welcome to Time Travel - a time machine on the Internet!
         p Time Travel will take you to explore the world of history related to your interesting topics. Try to search what you want to know and also specify the range of years you want to go through a time space.
         p You can control our time travel by using a keyboard or  leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
-        #controlGuide
-          #controlGuideLeft
-            center
-              h4 Keyboard
-              p Move forward
-              p Move backward
-          #controlGuideRight
-            center
-              h4 Leap Motion
-              p Move forward, Move backward
-              p Walk to the future!
+        #controlGuideLeft
+          center
+            h4 Keyboard
+          p Move forward
+          p Move backward
+        #controlGuideRight
+          center
+            h4 Leap Motion
+          p Move forward, Move backward
+          p Walk to the future!
 
     .ui
       form(id='form-search')
