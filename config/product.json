@@ -1,7 +1,7 @@
 {
   "env": "product",
 
-  "baseurl": "http://timeline.github.io",
+  "baseurl": "http://timetravel.boonmeelab.com",
 
   "logging": {
     "level": "warn",

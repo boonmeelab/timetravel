@@ -1,6 +1,6 @@
 {
-  "name": "photohack",
-  "description": "Wityu",
+  "name": "timetravel",
+  "description": "a photo time machine on the Internet",
   "version": "0.2.0",
   "private": true,
   "scripts": {

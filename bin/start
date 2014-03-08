@@ -7,9 +7,9 @@ if [ -z "$1" ]; then
 fi
 
 export ENV=$1
-FILEVERSION="wityu_${ENV}"
+FILEVERSION="timetravel_${ENV}"
 
-node --wityu lib/app.js >> /tmp/$FILEVERSION.log 2>> /tmp/$FILEVERSION.error &
+node --timetravel lib/app.js >> /tmp/$FILEVERSION.log 2>> /tmp/$FILEVERSION.error &
 echo $! > /tmp/$FILEVERSION.pid
 
 echo "start process -> $!"
