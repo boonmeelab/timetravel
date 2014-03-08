@@ -17,6 +17,8 @@ init();
 animate();
 
 const FADEOUT_DISTANCE = 30;
+const INFOBOX_RANGE_CENTER_POSITION = 15;
+const INFOBOX_RANGE_DISTANCE = 70;
 
 function compareImageDate(a,b){
   var dateA = a.imgObj.DateCreated;
@@ -376,6 +378,7 @@ function keyUpdate() {
 }
 
 var fadeout_offset = FADEOUT_DISTANCE/2;
+var infobox_offset = INFOBOX_RANGE_DISTANCE/2;
 function worldUpdate() {
   speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
@@ -388,7 +391,7 @@ function worldUpdate() {
     objectList.children.forEach(function(obj) {
       var posz =  obj.position.z + objectList.position.z;
       var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
-      var updatebox = posz >= 0 && posz < 10 ;
+      var updatebox = posz > INFOBOX_RANGE_CENTER_POSITION-infobox_offset && posz < INFOBOX_RANGE_CENTER_POSITION+infobox_offset ;
       if(updatebox && obj.imgObj){
         boxShowObj = obj;
         //console.log(boxShowObj);
@@ -416,6 +419,10 @@ function worldUpdate() {
         artist: boxShowObj.imgObj.Artist,
         caption: boxShowObj.imgObj.Caption
       });
+    }else{
+      updateInfoBox({
+        show: false
+      })
     }
   }
 }
