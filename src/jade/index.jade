@@ -7,6 +7,15 @@ html
     script(src="http://stemkoski.github.io/Three.js/js/KeyboardState.js")
     script(src="//js.leapmotion.com/leap-0.4.1.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/async/1.22/async.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
+    script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
+    script(src="/public/js/jquery.leanModal.min.js")
+    script.
+      // attach trigger to all lean modals
+      $(function(){
+        $("a[rel*=leanModal]").leanModal({ top: 80, overlay : 0.4});
+      });
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -120,94 +129,44 @@ html
         color: #FE4830;
         margin: 10px 0 10px;
       }
-      #guidelink{
-        text-decoration: none;
-        color: #A9A9A9;
-      }
-      #guidelink:hover{
-        color: #696969;
-      }
-      .guidelineDialog{
-        text-align: center;
+      #lean_overlay {
         position: fixed;
-        font-family: Arial, Helvetica, sans-serif;
-        z-index: 99999;
-        background: rgba(0,0,0,0.8);
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        opacity: 0;
-        -webkit-transition: opacity 400ms ease-in;
-        -moz-transition: opacity 400ms ease-in;
-        transition: opacity 400ms ease-in;
-        pointer-events: none;
+        z-index:9999;
+        top: 0px;
+        left: 0px;
+        height:100%;
+        width:100%;
+        background: #000;
+        display: none;
       }
-      .guidelineDialog:target{
-        opacity:1;
-        pointer-events: auto;
+      .modal{
+        display: none;
+        padding: 5px 20px 40px 20px;
+        background: #FFF;
+        border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
+        box-shadow: 0px 0px 4px rgba(0,0,0,0.7); -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7); -moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
       }
-      .guidelineDialog > div {
-        width: 70%;
-        height: 500px;
-        position: relative;
-        margin: 10% auto;
-        padding: 5px 20px 13px 20px;
-        border-radius: 10px;
-        background: #FFFFFF;
+      #aboutusModal{
+        width: 600px;
+      }
+      #tourModal{
+        width: 600px;
       }
       #controlGuideLeft {
         float:left;
         width:46%;
       }
       #controlGuideRight {
-        float: right;
+        float: left;
         width: 46%;
       }
-      .close {
-        color: #DCDCDC;
-        line-height: 25px;
-        position: absolute;
-        right: 0px;
-        text-align: center;
-        top: 0px;
-        width: 24px;
+      a {
         text-decoration: none;
-        font-weight: bold;
+        color: #000000;
       }
-      .close:hover { color: #808080; }
 
   body
     h1 <strong>Time</strong> Travel
-    #guidelineModal.guidelineDialog
-      div
-        a.close(href="#close") x 
-        h2 Guideline
-        p Welcome to Time Travel - a time machine on the Internet!
-        p Time Travel will take you to explore the world of history related to your interesting topics. 
-        p Try to search what you want to know and also specify the range of years you want to go through a time space.
-        p You can control our time travel by using a keyboard or  leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
-        #controlGuideLeft
-          center
-            h4 Keyboard
-          p 
-            img(src="/public/images/keyup.jpg") 
-            Move forward
-          p 
-            img(src="/public/images/keydown.jpg") 
-            Move backward
-        #controlGuideRight
-          center
-            h4 Leap Motion
-          p 
-            img(src="/public/images/clockwise.jpg") 
-            text Move forward
-            img(src="/public/images/counter_clockwise.jpg") 
-            text Move backward
-          p 
-            img(src="/public/images/walking_motion.jpg")
-            div Walk to the future!
-
     .ui
       form(id='form-search')
         input(type='search', placeholder='Computer', value='Computer', name='query')
@@ -219,15 +178,12 @@ html
       center
         #year-range-slider
         #year-range-text
-        a#guidelink(href="#guidelineModal") Take a tour
+        a(href="#tourModal", rel="leanModal") Take a Tour&nbsp;|&nbsp;
+        a(href="#aboutusModal", rel="leanModal") About the Maker&nbsp;|&nbsp;
+        a(href="http://www.photohackday.org", target="_black") Photo Hack Day 2014
 
-
-    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
-    script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
     script(src="/public/js/search.js")
     script(src="public/js/leap.js")
-
     #stage
     script(src="/public/js/render.js")
 
@@ -236,6 +192,54 @@ html
       .artist
       p
       .keyword
+
+    #tourModal.modal
+      div
+        center
+          h2 Guideline
+          p Welcome to Time Travel - a time machine on the Internet!
+          p Time Travel will take you to explore the world of history related to your interesting topics. 
+          p Try to search what you want to know and also specify the range of years you want to go through a time space.
+          p You can control our time travel by using a keyboard or  leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
+        #controlGuideLeft
+          center
+            h4 Keyboard
+            table
+              tr
+                td 
+                  img(src="/public/images/keyup.jpg") 
+                td Forward
+              tr
+                td 
+                  img(src="/public/images/keydown.jpg") 
+                td Backward
+        #controlGuideRight
+          center
+            h4 Leap Motion
+            table 
+              tr
+                td
+                  img(src="/public/images/clockwise.jpg", height="50px", width="50px") 
+                td(width="30px")
+                td
+                  img(src="/public/images/counter_clockwise.jpg", height="50px", width="50px") 
+              tr
+                td Forward
+                td &nbsp;
+                td Backward
+            <br>
+            img(src="/public/images/walking_motion.jpg", height="50px", width="100px")
+            div Walk through time!
+    #aboutusModal.modal
+      div
+        center
+          h2 About the Maker
+          p Our team is composed with 4 people
+        ul
+          li Theeraphol Wattanavekin - An infrastructure developer working in Rakuten, Inc. in Japan who interests in various fields such as web technology, big data, image processing and robotics.
+          li Rapee Suveeranont - All­-round developer with wide range of engineering skills in game, web and mobile application. He has working experiences in both frontend and backend in one of the top Japanese internet firms. He received a Master's degree from the University of Tokyo. He wants to build world-class products that people love to use.
+          li Shin Yoonjo - Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University. 
+          li Thiti Luang - A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
 
     script.
       function updateInfoBox(params) {
