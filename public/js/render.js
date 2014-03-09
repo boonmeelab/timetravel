@@ -173,14 +173,14 @@ function createTextMarker(str) {
   var group = new THREE.Object3D();
   var text = createText( str, {
       fontsize: 32,
-      fontface: 'Arial Rounded MT Bold',
-      backgroundColor: {r:49, g:140, b:231, a:1.0},//0x318ce7
-      borderColor: {r:49, g:140, b:231, a:1.0}//{r:0, g:0, b:255, a:1.0}
+      fontface: 'Abel',
+      backgroundColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
+      borderColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
     } );
   text.position.x = 37;
   text.position.y = -10;
   text.position.z = 0;
-  var line = createPlane({ width: 100, height: 5, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x92dde0});
+  var line = createPlane({ width: 100, height: 3, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x000000});
 
   group.add(text);
   group.add(line);

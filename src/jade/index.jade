@@ -1,5 +1,6 @@
 html
   head
+    link(href='http://fonts.googleapis.com/css?family=Abel', rel='stylesheet', type='text/css')
     title Time Travel
     link(rel="stylesheet", href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css")
     script(src="//rawgithub.com/mrdoob/three.js/master/build/three.js")
@@ -30,14 +31,24 @@ html
     style.
       body {
         margin: 0;
-        font-family: Helvetica, Arial;
         background: #f9f9f9;
-        color: #333;
+        color: #666;
+        font-family: 'Abel', Helvetica, Arial;
+      }
+      a {
+        font-size: 13px;
+      }
+      a:hover {
+        color: #ED1C24;
+        text-decoration: none;
+      }
+      input {
+        font-family: 'Abel', Helvetica, Arial;
       }
       .ui {
         position: absolute;
         z-index: 100;
-        bottom: 20px;
+        bottom: 10px;
         left: 0;
         right: 0;
       }
@@ -59,32 +70,30 @@ html
       h1 {
         position: absolute;
         z-index: 100;
-        font-size: 40px;
+        font-weight: normal;
+        font-size: 32px;
         margin: 10px 20px;
-        color: #92DDE0;
-        font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-        text-shadow: 1px 2px 0 #70C2D1;
+        color: 000;
       }
-      h1 strong {
-        color: #FE6860;
-        text-shadow: 1px 2px 0 #FD2500;
+      h1 .title {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 6px;
+      }
+      h1 .logo {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background: url('/public/images/logo.png') no-repeat;
+        background-size: cover;
+        vertical-align: middle;
       }
       input[name='query'] {
         font-size: 24px;
         line-height: 1.5;
         border-radius: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #999;
         padding: 10px;
-        outline: none;
-      }
-      select[name='startdate'] {
-        font-size: 16px;
-        border: 1px solid #ccc;
-        outline: none;
-      }
-      select[name='enddate'] {
-        font-size: 16px;
-        border: 1px solid #ccc;
         outline: none;
       }
       #stage {
@@ -94,23 +103,24 @@ html
         position: absolute;
         top: 10px;
         right: 10px;
-        width: 200px;
+        width: 250px;
       }
       #info-box.hidden {
         display: none;
       }
       #info-box h3 {
-        font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-        color: #FE4830;
-        margin: 0 0 10px;
+        font-weight: normal;
+        line-height: 1.2;
+        margin: 0;
+        color: 000;
       }
       #info-box .artist {
-        color: #999;
-        margin: 0 0 10px;
+        color: #ED1C24;
+        margin: 0 0 5px;
         font-size: 13px;
       }
       #info-box p {
-        margin: 0 0 10px;
+        margin: 0;
         font-size: 13px;
       }
       #year-range-slider {
@@ -126,10 +136,9 @@ html
         z-index: 2;
       }
       #year-range-text{
-        font-size: 24px;
-        font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
-        color: #FE4830;
-        margin: 10px 0 10px;
+        font-size: 18px;
+        color: #ED1C24;
+        margin: 10px 0 5px;
       }
       #lean_overlay {
         position: fixed;
@@ -168,7 +177,9 @@ html
       }
 
   body
-    h1 <strong>Time</strong> Travel
+    h1
+      .logo
+      .title Time Travel
     .ui
       form(id='form-search')
         input(type='search', placeholder='Computer', value='Computer', name='query')
@@ -180,9 +191,11 @@ html
       center
         #year-range-slider
         #year-range-text
-        a(href="#tourModal", rel="leanModal") Take a Tour&nbsp;|&nbsp;
-        a(href="#aboutusModal", rel="leanModal") About the Maker&nbsp;|&nbsp;
-        a(href="http://www.photohackday.org", target="_black") Photo Hack Day 2014
+        a(href="#tourModal", rel="leanModal") Take a Tour
+        &nbsp;|&nbsp;
+        a(href="#aboutusModal", rel="leanModal") About the Maker
+        &nbsp;|&nbsp;
+        a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
 
     #stage
 
