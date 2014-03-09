@@ -44,11 +44,3 @@ There are 2 gestures supported:
 
   - `Up` Move forward
   - `Down` Move backward
-
-## Note
-
-We only support Chrome at this time. Due to security reasons, you need to disable web security to make it works.
-
-On OSX, type
-
-    $ open -a /Applications/Google\ Chrome --args --disable-web-security
