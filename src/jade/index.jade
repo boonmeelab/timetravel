@@ -36,7 +36,8 @@ html
         font-family: 'Abel', Helvetica, Arial;
       }
       a {
-        font-size: 13px;
+        text-decoration: none;
+        color: #000000;
       }
       a:hover {
         color: #ED1C24;
@@ -87,6 +88,12 @@ html
         background: url('/public/images/logo.png') no-repeat;
         background-size: cover;
         vertical-align: middle;
+      }
+      h2 {
+        color: 000;
+      }
+      ul {
+        padding: 0;
       }
       input[name='query'] {
         font-size: 24px;
@@ -140,6 +147,9 @@ html
         color: #ED1C24;
         margin: 10px 0 5px;
       }
+      .footer {
+        font-size: 13px;
+      }
       #lean_overlay {
         position: fixed;
         z-index:9999;
@@ -152,10 +162,24 @@ html
       }
       .modal{
         display: none;
-        padding: 5px 20px 40px 20px;
+        padding: 5px 60px 40px;
+        box-sizing: border-box;
+        font-size: 15px;
         background: #FFF;
         border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px;
         box-shadow: 0px 0px 4px rgba(0,0,0,0.7); -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.7); -moz-box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+      }
+      .modal p {
+        margin: 0 0 10px;
+      }
+      .modal li {
+        margin-bottom: 5px;
+
+      }
+      .modal h3 {
+        color: #000;
+        font-size: 16px;
+        margin: 0 0 3px;
       }
       #aboutusModal{
         width: 600px;
@@ -170,10 +194,6 @@ html
       #controlGuideRight {
         float: left;
         width: 46%;
-      }
-      a {
-        text-decoration: none;
-        color: #000000;
       }
 
   body
@@ -191,10 +211,11 @@ html
       center
         #year-range-slider
         #year-range-text
+      center.footer
         a(href="#tourModal", rel="leanModal") Take a Tour
-        &nbsp;|&nbsp;
+        | &nbsp;&nbsp;|&nbsp;&nbsp;
         a(href="#aboutusModal", rel="leanModal") About the Maker
-        &nbsp;|&nbsp;
+        | &nbsp;&nbsp;|&nbsp;&nbsp;
         a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
 
     #stage
@@ -209,49 +230,56 @@ html
       div
         center
           h2 Guideline
-          p Welcome to Time Travel - a time machine on the Internet!
-          p Time Travel will take you to explore the world of history related to your interesting topics.
-          p Try to search what you want to know and also specify the range of years you want to go through a time space.
-          p You can control our time travel by using a keyboard or  leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
+          p Welcome to Time Travel &mdash; a time machine on the Internet!
+        p Time Travel will take you to explore the world of history related to your interesting topics.
+        p Try to search what you want to know and also specify the range of years you want to go through a time space.
+        p You can control our time travel by using a keyboard or leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
+        br
         #controlGuideLeft
           center
-            h4 Keyboard
+            h3 Keyboard
             table
               tr
                 td
-                  img(src="/public/images/keyup.jpg")
+                  img(src="/public/images/keyboard_up.png")
                 td Forward
               tr
                 td
-                  img(src="/public/images/keydown.jpg")
+                  img(src="/public/images/keyboard_down.png")
                 td Backward
         #controlGuideRight
           center
-            h4 Leap Motion
+            h3 Leap Motion
             table
               tr
                 td
-                  img(src="/public/images/clockwise.jpg", height="50px", width="50px")
+                  img(src="/public/images/LM_clockwise.png", height="50px", width="50px")
                 td(width="30px")
                 td
-                  img(src="/public/images/counter_clockwise.jpg", height="50px", width="50px")
+                  img(src="/public/images/LM_counterclockwise.png", height="50px", width="50px")
               tr
                 td Forward
                 td &nbsp;
                 td Backward
             <br>
-            img(src="/public/images/walking_motion.jpg", height="50px", width="100px")
+            img(src="/public/images/LM_handwalk.png", height="50px", width="100px")
             div Walk through time!
     #aboutusModal.modal
       div
         center
           h2 About the Maker
-          p Our team is composed with 4 people
         ul
-          li Theeraphol Wattanavekin - An infrastructure developer working in Rakuten, Inc. in Japan who interests in various fields such as web technology, big data, image processing and robotics.
-          li Rapee Suveeranont - All­-round developer with wide range of engineering skills in game, web and mobile application. He has working experiences in both frontend and backend in one of the top Japanese internet firms. He received a Master's degree from the University of Tokyo. He wants to build world-class products that people love to use.
-          li Shin Yoonjo - Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University.
-          li Thiti Luang - A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
+          h3 <a href='https://github.com/parnurzeal', target='_blank'>Theeraphol Wattanavekin</a>, Developer
+          p An infrastructure developer working in Rakuten, Inc. in Japan who interests in various fields such as web technology, big data, image processing and robotics.
+
+          h3 <a href='https://github.com/rapee', target='_blank'>Rapee Suveeranont</a>, Developer
+          p Full-stack developer with wide range of skills in game, web and mobile application. He also draws, runs and travels. Rapee wants to build world-class products that people love to use.
+
+          h3 Shin Yoonjo, Designer
+          p Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University.
+
+          h3 <a href='http://thitiphong.com', target='_blank'>Thiti Luang</a>, Designer
+          p A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
 
 
     //- Application scripts
