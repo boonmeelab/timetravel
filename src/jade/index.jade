@@ -103,6 +103,12 @@ html
         padding: 10px;
         outline: none;
       }
+      .result-text.hidden {
+        display: none;
+      }
+      .result-text .count {
+        color: #ED1C24;
+      }
       #stage {
         position: absolute;
       }
@@ -203,7 +209,8 @@ html
       .title Time Travel
     .ui
       form(id='form-search')
-        input(type='search', placeholder='Computer', value='Computer', name='query')
+        .result-text Showing <span class='count'></span> photos of
+        input(type='search', placeholder='e.x. computer', value='Computer', name='query')
         .spinner.hidden
         input(type='hidden', name='itemperpage', value='20')
         input(type='hidden',id='startdate',name='startdate')

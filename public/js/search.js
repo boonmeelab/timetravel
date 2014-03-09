@@ -1,5 +1,7 @@
 $(function() {
 	var requestId = null;
+	var searchResults;
+
 	// create slider with multihanders for year range search.
 	var current_year = new Date().getFullYear();
 	$('#year-range-slider').slider({
@@ -22,6 +24,8 @@ $(function() {
 		e.preventDefault();
 		$('.spinner').removeClass('hidden');
 		resetTimeline();
+		searchResults = [];
+		$('.result-text').addClass('hidden');
 
 		var masterdata = $('#form-search').serializeObject();
 		masterdata.startdate = masterdata.startdate || $('#year-range-slider').slider('values',0)+'-01-01';
@@ -64,7 +68,7 @@ $(function() {
 				if(nextstep<endyear)
 					data.enddate = nextstep+'-12-31';
 				else data.enddate = endyear + '-12-31';
-				console.log(data.startdate, data.enddate);
+
 				data.itemperpage = itemCount;
 
 				$.ajax({
@@ -108,18 +112,22 @@ $(function() {
 							addOnTimeline(createSprite(image, {width: w2, height: h2, service: 'getty'}));
 						});
 
+						searchResults = searchResults.concat(itemList);
+
+						$('.result-text').removeClass('hidden').find('.count').text(searchResults.length);
 				})
 				.fail(function(xhr){
 					console.error(xhr);
 				})
 				.always(function() {
-					$('.spinner').addClass('hidden');
 					cb();
 				});
 			},
 
 			function(err, result) {
-				// no op
+				if (reqId === requestId) {
+					$('.spinner').addClass('hidden');
+				}
 			}
 		)
 	});
