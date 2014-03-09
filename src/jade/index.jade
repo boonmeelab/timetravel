@@ -190,13 +190,23 @@ html
         #controlGuideLeft
           center
             h4 Keyboard
-          p Move forward
-          p Move backward
+          p 
+            img(src="/public/images/keyup.jpg") 
+            Move forward
+          p 
+            img(src="/public/images/keydown.jpg") 
+            Move backward
         #controlGuideRight
           center
             h4 Leap Motion
-          p Move forward, Move backward
-          p Walk to the future!
+          p 
+            img(src="/public/images/clockwise.jpg") 
+            text Move forward
+            img(src="/public/images/counter_clockwise.jpg") 
+            text Move backward
+          p 
+            img(src="/public/images/walking_motion.jpg")
+            div Walk to the future!
 
     .ui
       form(id='form-search')
