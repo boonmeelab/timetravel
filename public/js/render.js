@@ -12,6 +12,8 @@ var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
 
 var objectList;
 var dist = 0;
+var current_object_index;
+
 
 init();
 animate();
@@ -37,7 +39,8 @@ function resetTimeline() {
   // create new object group
   objectList = new THREE.Object3D();
   scene.add(objectList);
-  dist = 60;
+  dist = 90;
+  current_object_index = 0;
 }
 
 function deallocMesh(obj) {
@@ -262,17 +265,69 @@ function animate() {
 
 function keyUpdate() {
   keyboard.update();
-  if ( keyboard.pressed("up") )
-    speed += 0.4;
-  if ( keyboard.pressed("down") )
-    speed -= 0.4;
+  if ( keyboard.pressed("up") ) {
+    pressNextItem();
+  }
+  if ( keyboard.pressed("down") ) {
+    pressPrevItem();
+  }
 }
 
-var fadeout_offset = FADEOUT_DISTANCE/2;
+// Move next/previous with limited repeat rate at 200ms
+var pressNextItem = _.throttle(function() {
+  speed = 0;
+  startTween({
+    z: objectList.position.z
+  }, {
+    z: getNextPos()
+  });
+}, 200, {trailing: false});
+
+var pressPrevItem = _.throttle(function() {
+  speed = 0;
+  startTween({
+    z: objectList.position.z
+  }, {
+    z: getPrevPos()
+  });
+}, 200, {trailing: false});
+
+function getNextPos() {
+  var obj = objectList.children[current_object_index+1];
+  if (!obj) {
+    return -objectList.children[current_object_index].position.z;
+  } else {
+    current_object_index++;
+    return -obj.position.z;
+  }
+}
+function getPrevPos() {
+  var obj = objectList.children[current_object_index-1];
+  if (!obj) {
+    return -objectList.children[current_object_index].position.z;
+  } else {
+    current_object_index--;
+    return -obj.position.z;
+  }
+}
+
+function startTween(from, to) {
+  var tween = new TWEEN.Tween(from)
+  .to(to, 1000 )
+  .easing( TWEEN.Easing.Quadratic.Out )
+  .onUpdate( function () {
+    objectList.position.z = this.z;
+  } )
+  .start();
+}
+
+var fadeout_offset = FADEOUT_DISTANCE;
 var infobox_offset = INFOBOX_RANGE_DISTANCE/2;
 function worldUpdate() {
-  speed *= acc;
+  if (speed !== 0) speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
+
+  TWEEN.update();
 
   if (objectList) {
     // move objects
@@ -293,7 +348,7 @@ function worldUpdate() {
       // check if object near viewer
       var posz =  obj.position.z + objectList.position.z;
       var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
-      // check if needed to update info box 
+      // check if needed to update info box
       var updatebox = posz > INFOBOX_RANGE_CENTER_POSITION-infobox_offset && posz < INFOBOX_RANGE_CENTER_POSITION+infobox_offset ;
       // keep object to send image info to show in info box later at the bottom of this function
       if(updatebox && obj.imgObj){
