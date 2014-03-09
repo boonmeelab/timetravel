@@ -31,13 +31,13 @@ Leap.loop({enableGestures: true}, function(frame) {
               if(handState[gHandIds].position > gesture.position){
                 if(walkState==='DOWN'){
                   walkCount++;
-                  speed += 3;
+                  speed += 1;
                   walkState='UP';
                 }
               }else{
                 if(walkState==='UP'){
                   walkCount++;
-                  speed += 3;
+                  speed += 1;
                   walkState='DOWN';
                 }
               }
