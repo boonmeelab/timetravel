@@ -9,7 +9,7 @@ $(function() {
 		// gettyimage has image created since 1753, but it makes our slider range too long, we change to later year.
 		min: 1900,
 		max: current_year,
-		values: [ 1972, 2012],
+		values: [ 1972, 2014],
 		slide: function(event, ui){
 			// showing total year range
 			var text = ui.values[0] + ' - ' + ui.values[1];
