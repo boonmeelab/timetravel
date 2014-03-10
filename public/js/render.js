@@ -279,7 +279,7 @@ var pressNextItem = _.throttle(function() {
   startTween({
     z: objectList.position.z
   }, {
-    z: getNextPos()
+    z: getNextPos()+20
   });
 }, 200, {trailing: false});
 
@@ -288,7 +288,7 @@ var pressPrevItem = _.throttle(function() {
   startTween({
     z: objectList.position.z
   }, {
-    z: getPrevPos()
+    z: getPrevPos()+20
   });
 }, 200, {trailing: false});
 
@@ -311,23 +311,76 @@ function getPrevPos() {
   }
 }
 
+var tween;
 function startTween(from, to) {
-  var tween = new TWEEN.Tween(from)
-  .to(to, 1000 )
+  stopTween();
+  tween = new TWEEN.Tween(from)
+  .to(to, 500 )
   .easing( TWEEN.Easing.Quadratic.Out )
   .onUpdate( function () {
     objectList.position.z = this.z;
   } )
+  .onComplete( function() {
+    tween.isPlaying = false;
+  })
   .start();
+
+  tween.isPlaying = true;
+}
+function stopTween() {
+  if (tween && tween.isPlaying) {
+    console.log('stop tweening')
+    tween.stop();
+    tween.isPlaying = false;
+  }
 }
 
+function getCurrentObjectIndex() {
+  if (!objectList) return;
+  var camPos = -objectList.position.z;
+  var currentObj = objectList.children[current_object_index];
+  if (!currentObj) return;
+  var currentPos = currentObj.position.z;
+  var currentDis = Math.abs(camPos - currentPos);
+
+  var i = current_object_index, obj, dis;
+  var dir = camPos > currentPos ? -1 : 1;
+  while (true) {
+    obj = objectList.children[i+dir];
+    if (!obj) break;
+    dis = Math.abs(obj.position.z - currentPos);
+    if (dis < currentDis) {
+      i = i+dir;
+    } else {
+      break;
+    }
+  }
+  current_object_index = i;
+}
+
+var _intervalCurrentIndex;
 var fadeout_offset = FADEOUT_DISTANCE;
 var infobox_offset = INFOBOX_RANGE_DISTANCE/2;
 function worldUpdate() {
   if (speed !== 0) speed *= acc;
   if (Math.abs(speed) < 0.001) speed = 0;
+  if (speed !== 0) {
+    stopTween();
+  }
 
   TWEEN.update();
+
+  // calculate current object index if moving without tween
+  if ((!tween || !tween.isPlaying) && speed !== 0) {
+    if (!_intervalCurrentIndex) {
+      _intervalCurrentIndex = setInterval(getCurrentObjectIndex, 100);
+    }
+  } else {
+    if (_intervalCurrentIndex) {
+      clearInterval(_intervalCurrentIndex);
+      _intervalCurrentIndex = null;
+    }
+  }
 
   if (objectList) {
     // move objects
