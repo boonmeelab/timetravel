@@ -4,6 +4,8 @@ Browse history of places, people or things. Photo search are powered by [Getty I
 
 This is the winner project from [Photo Hack Day 5](http://photohackday.org). Previously called *Back to the Future*.
 
+Want to see how it works? Try it out here [http://timetravel.boonmeelab.com/](http://timetravel.boonmeelab.com/)
+
 
 ## Requirements
 
