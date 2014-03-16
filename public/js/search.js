@@ -21,6 +21,8 @@ $(function() {
 	$('#year-range-text').text( $('#year-range-slider').slider('values', 0 ) + ' - ' + $('#year-range-slider').slider('values', 1 ));
 
 	$('#form-search').on('submit', function(e) {
+		// hide old info. when search for new query
+		updateInfoBox({ show: false });
 		e.preventDefault();
 		$('.spinner').removeClass('hidden');
 		resetTimeline();
