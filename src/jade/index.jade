@@ -3,10 +3,10 @@ html
     link(href='http://fonts.googleapis.com/css?family=Abel', rel='stylesheet', type='text/css')
     title Time Travel
     link(rel="stylesheet", href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css")
-    script(src="//rawgithub.com/mrdoob/three.js/master/build/three.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js")
     script(src="/public/js/tween.min.js")
-    script(src="http://stemkoski.github.io/Three.js/js/OrbitControls.js")
-    script(src="http://stemkoski.github.io/Three.js/js/KeyboardState.js")
+    script(src="/public/js/threex/OrbitControls.js")
+    script(src="/public/js/threex/KeyboardState.js")
     script(src="//js.leapmotion.com/leap-0.4.1.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/async/1.22/async.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
@@ -14,6 +14,7 @@ html
     script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
     script(src="/public/js/jquery.leanModal.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/spin.js/2.0.1/spin.js")
     script.
       // attach trigger to all lean modals
       $(function(){
@@ -32,6 +33,7 @@ html
       body {
         margin: 0;
         background: #f9f9f9;
+        background: #fff;
         color: #666;
         font-family: 'Abel', Helvetica, Arial;
       }
@@ -46,12 +48,51 @@ html
       input {
         font-family: 'Abel', Helvetica, Arial;
       }
-      .ui {
+
+      #info-box {
         position: absolute;
         z-index: 100;
         bottom: 10px;
         left: 0;
         right: 0;
+
+        bottom: 60px;
+        left: 50%;
+        width: 400px;
+        margin-left: -200px;
+      }
+
+      header {
+        position: absolute;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 150px;
+        overflow: hidden;
+
+        background-image: url('../public/images/header-bg.png');
+        background-repeat: repeat-x;
+        background-position: 0 -20px;
+      }
+      .ui {
+      /*
+        position: absolute;
+        z-index: 100;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        */
+        position: absolute;
+        z-index: 100;
+        top: 10px;
+        right: 10px;
+        width: 250px;
+
+        top: 0;
+        left: 400px;
+        right: auto;
+        width: 560px;
       }
       .ui h1,
       .ui #form-search {
@@ -68,24 +109,60 @@ html
       .ui .spinner.hidden {
         visibility: hidden;
       }
+
+      #form-search {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 10px;
+      }
+
+      #form-search [type="submit"] {
+        display: inline-block;
+        width: 60px;
+        height: 48px;
+        margin: 0;
+        border: none;
+        background: #000;
+        vertical-align: top;
+        color: #fff;
+        font-family: 'Abel', Helvetica, Arial;
+        font-size: 18px;
+      }
+      #year-range {
+        display: inline-block;
+        width: 200px;
+        vertical-align: top;
+        margin-top: 15px;
+      }
       h1 {
         position: absolute;
         z-index: 100;
-        font-weight: normal;
-        font-size: 32px;
-        margin: 10px 20px;
+        margin: 20px 0 10px;
         color: 000;
       }
       h1 .title {
         display: inline-block;
         vertical-align: middle;
-        margin-left: 6px;
+        margin-left: 20px;
+        margin-top: -2px;
+        font-weight: normal;
+        font-size: 28px;
       }
-      h1 .logo {
+      h1 .title .logo {
         display: inline-block;
         width: 30px;
         height: 30px;
         background: url('/public/images/logo.png') no-repeat;
+        background-size: cover;
+        vertical-align: middle;
+        margin-right: 5px;
+        margin-top: -5px;
+      }
+      h1 .logo {
+        display: inline-block;
+        width: 191px;
+        height: 36px;
+        background: url('/public/images/gettyimages.gif') no-repeat;
         background-size: cover;
         vertical-align: middle;
       }
@@ -98,26 +175,59 @@ html
       input[name='query'] {
         font-size: 24px;
         line-height: 1.5;
-        border-radius: 10px;
-        border: 1px solid #999;
-        padding: 10px;
+        /*border-radius: 10px;*/
+        background: #f6f6f6;
+        border: 1px solid #eee;
+        padding: 5px 10px;
         outline: none;
+        margin: 0;
       }
+      input[name='query']:focus {
+        background: white;
+        border: 1px solid #ccc;
+      }
+      .status {
+        position: relative;
+        width: 240px;
+        margin: 0 auto;
+
+        position: absolute;
+        z-index: 100;
+        top: 70px;
+        left: 50%;
+        margin-left: -120px;
+        left: 960px;
+        top: 20px;
+        margin-left: 0;
+      }
+      .loading-text.hidden,
       .result-text.hidden {
         display: none;
+      }
+      .loading-text {
+        float: left;
+        margin-left: 24px;
+      }
+      .result-text {
+        /*text-align: right;*/
+        float: left;
+        margin-left: 24px;
       }
       .result-text .count {
         color: #ED1C24;
       }
       #stage {
         position: absolute;
+        top: 30px;
       }
+      /*
       #info-box {
         position: absolute;
         top: 10px;
         right: 10px;
         width: 250px;
       }
+      */
       #info-box.hidden {
         display: none;
       }
@@ -133,12 +243,18 @@ html
         font-size: 13px;
       }
       #info-box p {
-        margin: 0;
+        margin: 0 0 10px;
         font-size: 13px;
+      }
+      #info-box .more {
+        color: #000;
+        font-size: 12px;
       }
       #year-range-slider {
         width: 30%;
         font-size: 13px;
+
+        width: 80%;
       }
 
       .ui-slider .ui-slider-handle{
@@ -153,9 +269,59 @@ html
         color: #ED1C24;
         margin: 10px 0 5px;
       }
+      .profile-list li {
+        list-style: none;
+        clear: both;
+      }
+      .profile-main {
+        float: left;
+        width: 400px;
+      }
+      .profile-pic {
+        display: block;
+        float: left;
+        width: 60px;
+        height: 60px;
+        margin-right: 20px;
+        border-radius: 60px;
+        overflow: hidden;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .profile-pic-theeraphol {
+        background-image: url('../public/images/profile-theeraphol.png');
+      }
+      .profile-pic-rapee {
+        background-image: url('../public/images/profile-rapee.png');
+      }
+      .profile-pic-thiti {
+        background-image: url('../public/images/profile-thiti.png');
+      }
+      .profile-pic-yoonjo {
+        background-image: url('../public/images/profile-yoonjo.png');
+      }
       .footer {
         font-size: 13px;
         color: #000;
+        position: absolute;
+        z-index: 100;
+        bottom: 20px;
+        left: 30px;
+
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 20px;
+        background: #333;
+        color: #ccc;
+      }
+      .footer a {
+        margin-right: 15px;
+        color: #ccc;
+      }
+      .footer a:hover {
+        color: #ED1C24;
       }
       #lean_overlay {
         position: fixed;
@@ -203,39 +369,78 @@ html
         width: 46%;
       }
 
-  body
-    h1
-      .logo
-      .title Time Travel
-    .ui
-      form(id='form-search')
-        .result-text Showing <span class='count'></span> photos of
-        input(type='search', placeholder='e.x. computer', value='Computer', name='query')
-        .spinner.hidden
-        input(type='hidden', name='itemperpage', value='20')
-        input(type='hidden',id='startdate',name='startdate')
-        input(type='hidden',id='enddate',name='enddate')
-        input(type='hidden', name='sortby', value='MostPopular')
-      center
-        #year-range-slider
-        #year-range-text
-      center.footer
-        a(href="#tourModal", rel="leanModal") Take a Tour
-        | &nbsp;&nbsp;|&nbsp;&nbsp;
-        a(href="#aboutusModal", rel="leanModal") About the Maker
-        | &nbsp;&nbsp;|&nbsp;&nbsp;
-        a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
-        | &nbsp;&nbsp;|&nbsp;&nbsp;
-        | 1<sup>st</sup> prize from&nbsp;
-        a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
+      #controller {
+        position: absolute;
+        z-index: 100;
+        top: 150px;
+        left: 50%;
+        margin-left: 350px;
+        -webkit-transition: all 1s ease-in-out;
+           -moz-transition: all 1s ease-in-out;
+            -ms-transition: all 1s ease-in-out;
+                transition: all 1s ease-in-out;
+      }
 
+      #controller.hidden {
+        opacity: 0;
+      }
+
+      #controller > a {
+        display: block;
+        width: 50px;
+        cursor: pointer;
+        opacity: .5;
+        margin-bottom: 25px;
+      }
+      #controller > a:hover {
+        opacity: 1;
+      }
+
+  body
+    header
+      h1
+        a.logo(href='http://gettyimages.jp', target='_blank')
+        .title
+          .logo
+          | Time Travel
+      .ui
+        form(id='form-search')
+          input(type='search', placeholder='e.x. computer', value='Computer', name='query')
+          button(type='submit') Go
+          //- .spinner.hidden
+          input(type='hidden', name='itemperpage', value='20')
+          input(type='hidden',id='startdate',name='startdate')
+          input(type='hidden',id='enddate',name='enddate')
+          input(type='hidden', name='sortby', value='MostPopular')
+        center#year-range
+          #year-range-slider
+          #year-range-text
+      .status
+        .loading-text Loading...
+        .result-text <span class='count'></span> photos found
+    center.footer
+      a(href="#tourModal", rel="leanModal") Take a Tour
+      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
+      a(href="#aboutusModal", rel="leanModal") About the Creator
+      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
+      a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
+      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
+      | 1<sup>st</sup> prize from&nbsp;
+      a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
+
+    #controller.hidden
+      a.next-btn(title="Arrow Up")
+        img(src="/public/images/keyboard-up.png")
+      a.prev-btn(title="Arrow Down")
+        img(src="/public/images/keyboard-down.png")
     #stage
 
     #info-box.hidden
       h3
       .artist
       p
-      .keyword
+      //- .keyword
+      a.more(target='_blank') Show Original
 
     #tourModal.modal
       div
@@ -252,11 +457,11 @@ html
             table
               tr
                 td
-                  img(src="/public/images/keyboard_up.png")
+                  img(src="/public/images/keyboard-up.png", style="margin: 5px 10px;")
                 td Forward
               tr
                 td
-                  img(src="/public/images/keyboard_down.png")
+                  img(src="/public/images/keyboard-down.png", style="margin: 5px 10px;")
                 td Backward
         #controlGuideRight
           center
@@ -278,31 +483,52 @@ html
     #aboutusModal.modal
       div
         center
-          h2 About the Maker
-        ul
-          h3 <a href='http://www.parnurzeal.com', target='_blank'>Theeraphol Wattanavekin</a>, Developer
-          p An infrastructure developer working in Rakuten, Inc. in Japan who interests in various fields such as web technology, big data, image processing and robotics.
+          h2 About the Creator
+        ul.profile-list
+          li
+            .profile-pic.profile-pic-theeraphol
+            .profile-main
+              h3 <a href='http://www.parnurzeal.com', target='_blank'>Theeraphol Wattanavekin</a>, Developer
+              p An infrastructure developer working in Rakuten, Inc. in Japan who interests in various fields such as web technology, big data, image processing and robotics.
 
-          h3 <a href='https://github.com/rapee', target='_blank'>Rapee Suveeranont</a>, Developer
-          p Full-stack developer with wide range of skills in game, web and mobile application. He also draws, runs and travels. Rapee wants to build world-class products that people love to use.
+          li
+            .profile-pic.profile-pic-rapee
+            .profile-main
+              h3 <a href='https://github.com/rapee', target='_blank'>Rapee Suveeranont</a>, Developer
+              p Full-stack developer with wide range of skills in game, web and mobile application. He also draws, runs and travels. Rapee wants to build world-class products that people love to use.
 
-          h3 Shin Yoonjo, Designer
-          p Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University.
+          li
+            .profile-pic.profile-pic-yoonjo
+            .profile-main
+              h3 Shin Yoonjo, Designer
+              p Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University.
 
-          h3 <a href='http://thitiphong.com', target='_blank'>Thiti Luang</a>, Designer
-          p A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
+          li
+            .profile-pic.profile-pic-thiti
+            .profile-main
+              h3 <a href='http://thitiphong.com', target='_blank'>Thiti Luang</a>, Designer
+              p A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
 
 
     //- Application scripts
-    script(src="/public/js/search.js")
-    script(src="/public/js/leap.js")
+    //- script(src="/public/js/search.js")
     script(src="/public/js/render.js")
+    script(src="/public/js/leap.js")
+    //- script(src="/public/js/render.js")
 
     script.
+      var currentInfoBoxId;
       function updateInfoBox(params) {
         var $box = $('#info-box');
-        if (typeof params.show === 'boolean') $box[ params.show ? 'removeClass' : 'addClass']('hidden');
-        if (params.title) $box.find('h3').text(params.title); // Title
-        if (params.artist) $box.find('.artist').text(params.artist); // Artist
-        if (params.caption) $box.find('p').text(params.caption); // Caption
+        if (params.id != currentInfoBoxId) {
+          currentInfoBoxId = params.id;
+          var url = 'http://www.gettyimages.co.jp/detail/'+params.id+'?referer=timetravel';
+          if (typeof params.show === 'boolean') $box[ params.show ? 'removeClass' : 'addClass']('hidden');
+          if (params.title) $box.find('h3').empty().append($('<a target="_blank">').attr('href', url).text(params.title)); // Title
+          if (params.artist) $box.find('.artist').text(params.artist); // Artist
+          if (params.caption) {
+            $box.find('p').text(params.caption.slice(0, 500) + (params.caption.length > 500 ? '...' : '')); // Caption
+          }
+          $box.find('.more').attr('href', url); // Link
+        }
       }
