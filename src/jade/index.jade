@@ -119,20 +119,14 @@ html
       #form-search [type="submit"] {
         display: inline-block;
         width: 60px;
-        height: 48px;
-        margin: 0;
+        height: 35px;
+        margin: 10px 0 0;
         border: none;
         background: #000;
         vertical-align: top;
         color: #fff;
         font-family: 'Abel', Helvetica, Arial;
         font-size: 18px;
-      }
-      #year-range {
-        display: inline-block;
-        width: 200px;
-        vertical-align: top;
-        margin-top: 15px;
       }
       h1 {
         position: absolute;
@@ -173,18 +167,21 @@ html
         padding: 0;
       }
       input[name='query'] {
-        font-size: 24px;
-        line-height: 1.5;
+        font-size: 18px;
+        line-height: 36px
         /*border-radius: 10px;*/
         background: #f6f6f6;
         border: 1px solid #eee;
-        padding: 5px 10px;
+        padding: 5px 5px;
         outline: none;
-        margin: 0;
+        margin: 10px 0 0;
       }
       input[name='query']:focus {
         background: white;
         border: 1px solid #ccc;
+      }
+      .toggle-year-range {
+        display: none;
       }
       .status {
         position: relative;
@@ -196,8 +193,8 @@ html
         top: 70px;
         left: 50%;
         margin-left: -120px;
-        left: 960px;
-        top: 20px;
+        left: 870px;
+        top: 25px;
         margin-left: 0;
       }
       .loading-text.hidden,
@@ -255,6 +252,7 @@ html
         font-size: 13px;
 
         width: 80%;
+        margin-top: 25px;
       }
 
       .ui-slider .ui-slider-handle{
@@ -264,10 +262,47 @@ html
         width: 1.2em;
         z-index: 2;
       }
+      #year-range {
+        display: inline-block;
+        width: 200px;
+        vertical-align: top;
+        margin-top: 15px;
+        position: relative;
+      }
+      #year-range-label{
+        position: absolute;
+        top: 0;
+        left: 20px;
+        font-size: 14px;
+        color: #333;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 20px;
+      }
       #year-range-text{
-        font-size: 18px;
+        font-size: 14px;
         color: #ED1C24;
         margin: 10px 0 5px;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 60px;
+      }
+      #year-range-from,
+      #year-range-to {
+        font-size: 14px;
+        color: #ED1C24;
+      }
+      #year-range-from {
+        position: absolute;
+        top: 0;
+        left: 80px;
+      }
+      #year-range-from {
+        position: absolute;
+        top: 0;
+        right: 80px;
       }
       .profile-list li {
         list-style: none;
@@ -371,7 +406,7 @@ html
 
       #controller {
         position: absolute;
-        z-index: 100;
+        z-index: 101;
         top: 150px;
         left: 50%;
         margin-left: 350px;
@@ -396,6 +431,170 @@ html
         opacity: 1;
       }
 
+
+      @media only screen and (max-width: 1024px) and (min-width: 480px) {
+        .status {
+          top: 70px;
+          left: 20px;
+        }
+      }
+
+      @media only screen and (max-width: 850px) and (min-width: 480px) {
+        .footer {
+          display: none;
+        }
+
+        h1 {
+          position: absolute;
+          top: 0;
+          left: 0;
+          margin-top: 25px;
+        }
+        h1 .logo {
+          width: 96px;
+          height: 18px;
+        }
+        h1 .title {
+          font-size: 18px;
+        }
+        h1 .title .logo {
+          width: 15px;
+          height: 15px;
+        }
+        .ui {
+          left: auto;
+          right: 20px;
+          width: 450px;
+        }
+
+        #controller {
+          margin-left: 0;
+          left: auto;
+          right: 30px;
+        }
+        #info-box {
+          bottom: 20px;
+        }
+      }
+
+      @media only screen and (max-width: 480px) {
+        .footer {
+          display: none;
+        }
+        h1 {
+          display: none;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        h1 .logo { display: none; }
+        h1 .title {
+          font-size: 18px;
+        }
+        h1 .title .logo {
+          width: 15px;
+          height: 15px;
+        }
+        .ui {
+          width: 100%;
+          position: static;
+          text-align: center;
+        }
+        .ui #form-search {
+          position: absolute;
+          left: 0;
+          margin: 0;
+
+          text-align: left;
+          width: 90%;
+          left: 5%;
+        }
+        #form-search [type="search"] {
+          width: 70%;
+        }
+
+        .toggle-year-range {
+          display: inline-block;
+          width: 35px;
+          height: 35px;
+          position: absolute;
+          top: 10px;
+          right: 0;
+          background-image: url('/public/images/keyboard-up.png');
+          background-size: cover;
+        }
+        .option-active .toggle-year-range {
+          background-image: url('/public/images/keyboard-down.png');
+        }
+
+        #year-range {
+          display: none;
+        }
+        .option-active #year-range {
+          display: block;
+          position: absolute;
+          top: 50px;
+          right: 0;
+          left: 0;
+          margin-top: 10px;
+
+          width: 100%;
+
+          padding-bottom: 20px;
+          background: white;
+          border-bottom: 1px solid #ddd;
+        }
+        #year-range-label {
+          left: 10%;
+        }
+        #year-range-text {
+          left: 20%;
+        }
+        #controller {
+          margin-left: 0;
+          left: auto;
+          right: 10px;
+          bottom: 0;
+          top: auto;
+        }
+      }
+      @media only screen and (max-width: 350px) {
+        #form-search {
+          width: 96%;
+          left: 2%;
+        }
+        #form-search [type="search"] {
+          width: 60%;
+        }
+      }
+
+      @media only screen and (max-height: 600px) {
+
+        #info-box {
+          margin-left: 0;
+          left: 20px;
+          right: 20px;
+          width: auto;
+          height: 140px;
+          bottom: 10px;
+          overflow: auto;
+        }
+        #info-box h3 {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 100%;
+        }
+
+      }
+      @media only screen and (max-height: 400px) {
+
+        #info-box {
+          height: 100px;
+        }
+      }
+
+
   body
     header
       h1
@@ -407,6 +606,7 @@ html
         form(id='form-search')
           input(type='search', placeholder='e.x. コンピューター', value='コンピューター', name='query')
           button(type='submit') Go
+          a.toggle-year-range(href='#')
           //- .spinner.hidden
           input(type='hidden', name='itemperpage', value='20')
           input(type='hidden',id='startdate',name='startdate')
@@ -414,6 +614,7 @@ html
           input(type='hidden', name='sortby', value='MostPopular')
         center#year-range
           #year-range-slider
+          #year-range-label Year
           #year-range-text
       .status
         .loading-text Loading...
@@ -423,7 +624,7 @@ html
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       a(href="#aboutusModal", rel="leanModal") About the Creator
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
-      a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
+      //- a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       | 1<sup>st</sup> prize from&nbsp;
       a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
@@ -507,7 +708,7 @@ html
             .profile-pic.profile-pic-thiti
             .profile-main
               h3 <a href='http://thitiphong.com', target='_blank'>Thiti Luang</a>, Designer
-              p A veteran Experience Designer in Thailand and New York City focusing on using design and technology to build great product and service for the better living. His experiences include graphic design, interaction design, UX/UI design, illustration, sound installation, museum and concert design. He got a Bachelor degree of industrial design from Chulalongkorn University, Thailand and Master degree from Interactive Telecommunications Program, NYU sponsored by Fulbright scholarship. He is currently teaching design classes and pursuing entrepreneurship in Bangkok.
+              p An experience designer who makes things he loves for people he likes.
 
 
     //- Application scripts

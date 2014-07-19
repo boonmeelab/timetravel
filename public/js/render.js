@@ -475,6 +475,11 @@ $(function() {
     pressPrevItem();
   });
 
+  $('.toggle-year-range').on('click', function(e) {
+    e.preventDefault();
+    $('.ui').toggleClass('option-active');
+  })
+
   // create slider with multihanders for year range search.
   var current_year = new Date().getFullYear();
   $('#year-range-slider').slider({
