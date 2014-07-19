@@ -9,6 +9,13 @@
     "stack": true,
     "dump": false,
     "debug_view": false
-  }
+  },
 
+  "connect_api":{
+    "Site": "https://connect.gettyimages.com/oauth2/token",
+    "ClientId": "",
+    "ClientSecret": "",
+    "UserName": "",
+    "UserPassword": ""
+  }
 }
