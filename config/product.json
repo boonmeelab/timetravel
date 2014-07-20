@@ -1,7 +1,7 @@
 {
   "env": "product",
 
-  "baseurl": "http://timetravel.boonmeelab.com",
+  "baseurl": "http://timetravel-gettyimages.jp",
 
   "logging": {
     "level": "warn",
