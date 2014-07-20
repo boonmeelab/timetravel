@@ -60,7 +60,6 @@ function init() {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  renderer = new THREE.WebGLRenderer( { alpha: true } );
   if (window.WebGLRenderingContext)
     renderer = new THREE.WebGLRenderer( { alpha: true } );
   else
