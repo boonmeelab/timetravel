@@ -3,6 +3,8 @@
 
   "baseurl": "http://localhost:8000",
 
+  "port": 8000,
+
   "logging": {
     "level": "debug",
     "line": true,

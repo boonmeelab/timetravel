@@ -3,6 +3,8 @@
 
   "baseurl": "http://timetravel-gettyimages.jp",
 
+  "port": 80,
+
   "logging": {
     "level": "warn",
     "line": true,
