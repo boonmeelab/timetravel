@@ -197,9 +197,18 @@ html
         top: 70px;
         left: 50%;
         margin-left: -120px;
-        left: 870px;
+        left: 855px;
         top: 25px;
         margin-left: 0;
+      }
+      .social-header {
+        position: absolute;
+        width: 150px;
+        
+        z-index: 100;
+        
+        right: 10px;
+        top: 25px;
       }
       .loading-text.hidden,
       .result-text.hidden {
@@ -434,12 +443,20 @@ html
       #controller > a:hover {
         opacity: 1;
       }
-
-
-      @media only screen and (max-width: 1024px) and (min-width: 480px) {
-        .status {
+      @media only screen and (max-width: 1155px){
+        .social-header{
           top: 70px;
-          left: 20px;
+          left: 25px;
+        }
+      }
+      @media only screen and (max-width: 1024px) and (min-width: 480px) {
+        .social-header{
+          top: 70px;
+          left: 25px;
+        }
+        .status {
+          top: 100px;
+          left: 25px;
         }
       }
 
@@ -600,6 +617,24 @@ html
 
 
   body
+    #fb-root    
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '738154599580860',
+          xfbml      : true,
+          version    : 'v2.0'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
     header
       h1
         a.logo(href='http://gettyimages.jp', target='_blank')
@@ -623,6 +658,9 @@ html
       .status
         .loading-text Loading...
         .result-text <span class='count'></span> photos found
+      .social-header
+        .fb-like(data-href="http://timetravel-gettyimages.jp", data-layout="button_count", data-action="like", data-show-faces="true", data-share="true")
+
     center.footer
       a(href="#tourModal", rel="leanModal") Take a Tour
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -632,7 +670,7 @@ html
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       | 1<sup>st</sup> prize from&nbsp;
       a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
-
+    
     #controller.hidden
       a.next-btn(title="Arrow Up")
         img(src="/public/images/keyboard-up.png")
@@ -737,3 +775,5 @@ html
           $box.find('.more').attr('href', url); // Link
         }
       }
+
+    
