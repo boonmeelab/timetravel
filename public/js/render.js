@@ -1009,7 +1009,7 @@ NoWebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
 
 // Start App
 var TT;
-if ($('html').is('.ie8')) {
+if ($('html').is('.ie8') || location.search.indexOf('mode=old') >= 0) {
   TT = new NoWebGLTimeTravel();
 } else {
   TT = new WebGLTimeTravel();
