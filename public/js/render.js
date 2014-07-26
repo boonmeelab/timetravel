@@ -1,49 +1,60 @@
-var stageTop = 30;
-var camera, scene, renderer;
-var cube;
-var controls;
 
-var offset = 0;
-var speed = 0;
-var acc = 0.97;
+// BEGIN - WebGLTimeTravel
+var WebGLTimeTravel = function() {
+  console.info('Normal mode');
 
-var keyboard = new THREEx.KeyboardState();
-var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
+  $('html').addClass('webgl');
 
-var objectList;
-var dist = 0;
-var current_object_index;
+  this.FADEOUT_DISTANCE = 30;
+  this.INFOBOX_RANGE_CENTER_POSITION = 10;
+  this.INFOBOX_RANGE_DISTANCE = 76;
+  this.STAGE_TOP = 30;
 
+  this.speed = 0;
+  this.acc = 0.97;
+  this.dist = 0;
 
-init();
-animate();
+  this.keyboard = new THREEx.KeyboardState();
+  this.mouse = { x: 0, y: 0 };
 
-var FADEOUT_DISTANCE = 30;
-var INFOBOX_RANGE_CENTER_POSITION = 10;
-var INFOBOX_RANGE_DISTANCE = 76;
+  // this.camera
+  // this.scene
+  // this.renderer
+  // this.projector
+  // this.tween
+  // this.objectList
 
-function addOnTimeline(obj, d1, d2) {
-  objectList.add(obj);
-  dist -= d1 || 60;
-  obj.position.z = dist;
-  dist -= d2 || 60;
+  // this.current_object_index
+  // this._intervalCurrentIndex
+
+  this.fadeout_offset = this.FADEOUT_DISTANCE;
+  this.infobox_offset = this.INFOBOX_RANGE_DISTANCE/2;
+};
+
+WebGLTimeTravel.prototype.addOnTimeline = function addOnTimeline(obj, d1, d2) {
+  var self = this;
+  self.objectList.add(obj);
+  self.dist -= d1 || 60;
+  obj.position.z = this.dist;
+  self.dist -= d2 || 60;
 }
-function resetTimeline() {
-  if (objectList) {
-    objectList.children.forEach(function(obj) {
-      deallocMesh(obj);
-      scene.remove(obj);
+WebGLTimeTravel.prototype.resetTimeline = function resetTimeline() {
+  var self = this;
+  if (self.objectList) {
+    self.objectList.children.forEach(function(obj) {
+      self.deallocMesh(obj);
+      self.scene.remove(obj);
     });
-    scene.remove(objectList);
+    self.scene.remove(self.objectList);
   }
   // create new object group
-  objectList = new THREE.Object3D();
-  scene.add(objectList);
-  dist = 90;
-  current_object_index = 0;
+  self.objectList = new THREE.Object3D();
+  self.scene.add(self.objectList);
+  self.dist = 90;
+  self.current_object_index = 0;
 }
 
-function deallocMesh(obj) {
+WebGLTimeTravel.prototype.deallocMesh = function deallocMesh(obj) {
   if (obj instanceof THREE.Mesh) {
     obj.texture && obj.texture.dispose();
     obj.material && obj.material.dispose();
@@ -56,46 +67,43 @@ function deallocMesh(obj) {
   }
 }
 
-function init() {
-
-  window.addEventListener( 'resize', onWindowResize, false );
+WebGLTimeTravel.prototype.init = function init() {
+  var self = this;
+  window.addEventListener( 'resize', function() { self.onWindowResize.apply(self, arguments); }, false );
 
   if (window.WebGLRenderingContext)
-    renderer = new THREE.WebGLRenderer( { alpha: true } );
+    self.renderer = new THREE.WebGLRenderer( { alpha: true } );
   else
-    renderer = new THREE.CanvasRenderer( { alpha: true } );
-
+    self.renderer = new THREE.CanvasRenderer( { alpha: true } );
 
   // renderer.setClearColor( 0xeeeeee, 1);
-  renderer.setClearColor( 0x000000, 0);
-  renderer.setSize( window.innerWidth, window.innerHeight - stageTop );
-  document.getElementById( 'stage' ).appendChild( renderer.domElement );
+  self.renderer.setClearColor( 0x000000, 0);
+  self.renderer.setSize( window.innerWidth, window.innerHeight - self.STAGE_TOP );
+  document.getElementById( 'stage' ).appendChild( self.renderer.domElement );
 
-  camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 3000 );
-  camera.position.set(0, 80, 150);
-  // camera.translateY(-50);
-  // camera.rotation.x = 1;
-  // camera.target = new THREE.Vector3( 0, -50, 50);
-  // camera.up = new THREE.Vector3(0,0,1);
-  camera.lookAt(new THREE.Vector3( 0, 0, 0));
+  self.camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 3000 );
+  self.camera.position.set(0, 80, 150);
+  self.camera.lookAt(new THREE.Vector3( 0, 0, 0));
 
-  scene = new THREE.Scene();
+  self.scene = new THREE.Scene();
 
-  scene.add(createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xffffff, opacity: 1}));
-  scene.add(createPlane({ width: 110, position: {z: 500, y: -2}, rotation: {x:Math.PI/2}, color: 0xeeeeee, opacity: 1}));
-  scene.add(createPlane({ width: 120, position: {z: 500, y: -4}, rotation: {x:Math.PI/2}, color: 0xdddddd, opacity: 1}));
-  scene.add(createPlane({ width: 135, position: {z: 500, y: -6}, rotation: {x:Math.PI/2}, color: 0xcccccc, opacity: 1}));
+  self.scene.add(self.createPlane({ position: {z: /*-1480*/ 500}, rotation: {x:Math.PI/2}, color: 0xffffff, opacity: 1}));
+  self.scene.add(self.createPlane({ width: 110, position: {z: 500, y: -2}, rotation: {x:Math.PI/2}, color: 0xeeeeee, opacity: 1}));
+  self.scene.add(self.createPlane({ width: 120, position: {z: 500, y: -4}, rotation: {x:Math.PI/2}, color: 0xdddddd, opacity: 1}));
+  self.scene.add(self.createPlane({ width: 135, position: {z: 500, y: -6}, rotation: {x:Math.PI/2}, color: 0xcccccc, opacity: 1}));
   // scene.add(createPlane({ width: 150, height: 20, position: {y:-10, z: 20 }, color: 0x318ce7}));
 
   // initialize object to perform world/screen calculations
-  projector = new THREE.Projector();
+  self.projector = new THREE.Projector();
 
   // when the mouse moves, call the given function
-  document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+  document.addEventListener( 'mousemove', function() { self.onDocumentMouseMove.apply(self, arguments); }, false );
 
+  // Start
+  self.animate();
 }
 
-function onDocumentMouseMove( event )
+WebGLTimeTravel.prototype.onDocumentMouseMove = function onDocumentMouseMove( event )
 {
   // the following line would stop any other event handler from firing
   // (such as the mouse's TrackballControls)
@@ -106,17 +114,23 @@ function onDocumentMouseMove( event )
   // sprite1.position.set( event.clientX, event.clientY - 20, 0 );
 
   // update the mouse variable
-  mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-  mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+  this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+WebGLTimeTravel.prototype.onWindowResize = function onWindowResize() {
+  var self = this;
+  self.camera.aspect = window.innerWidth / window.innerHeight;
+  self.camera.updateProjectionMatrix();
+
+  self.renderer.setSize( window.innerWidth, window.innerHeight - this.STAGE_TOP);
 }
 
-
-function createCube() {
-
+WebGLTimeTravel.prototype.createCube = function createCube() {
+  var self = this;
   var geometry = new THREE.BoxGeometry( 200, 200, 200 );
 
   var texture = THREE.ImageUtils.loadTexture( '/public/images/crate.gif' );
-  texture.anisotropy = renderer.getMaxAnisotropy();
+  texture.anisotropy = self.renderer.getMaxAnisotropy();
 
   var material = new THREE.MeshBasicMaterial( { map: texture } );
 
@@ -124,7 +138,7 @@ function createCube() {
   return mesh;
 }
 
-function createPlane(params) {
+WebGLTimeTravel.prototype.createPlane = function createPlane(params) {
   params = params || {};
   params.position = params.position || {};
   params.rotation = params.rotation || {};
@@ -144,7 +158,7 @@ function createPlane(params) {
   return mesh;
 }
 
-function createSprite(imgObj, params) {
+WebGLTimeTravel.prototype.createSprite = function createSprite(imgObj, params) {
   params = params || {};
   var texture;
   var sprite;
@@ -174,9 +188,9 @@ function createSprite(imgObj, params) {
   return sprite;
 }
 
-function createTextMarker(str) {
+WebGLTimeTravel.prototype.createTextMarker = function createTextMarker(str) {
   var group = new THREE.Object3D();
-  var text = createText( str, {
+  var text = this.createText( str, {
       fontsize: 64,
       fontface: 'Abel',
       backgroundColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
@@ -186,14 +200,14 @@ function createTextMarker(str) {
   text.position.y = -10 + 15;
   text.position.z = 0;
 
-  var line = createPlane({ width: 100, height: 3, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x000000});
+  var line = this.createPlane({ width: 100, height: 3, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x000000});
 
   group.add(text);
   group.add(line);
   return group;
 }
 
-function createText( message, parameters )
+WebGLTimeTravel.prototype.createText = function createText( message, parameters )
 {
   if ( parameters === undefined ) parameters = {};
 
@@ -251,110 +265,104 @@ function createText( message, parameters )
   return sprite;
 }
 
-function onWindowResize() {
+WebGLTimeTravel.prototype.animate = function animate() {
+  var self = this;
+  requestAnimationFrame( function() {
+    animate.call(self);
+  } );
 
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  self.renderer.render( self.scene, self.camera );
 
-  renderer.setSize( window.innerWidth, window.innerHeight - stageTop);
+  self.keyUpdate();
 
+  self.worldUpdate();
 }
 
-function animate() {
-
-  requestAnimationFrame( animate );
-
-  renderer.render( scene, camera );
-
-  keyUpdate();
-
-  worldUpdate();
-}
-
-function keyUpdate() {
+WebGLTimeTravel.prototype.keyUpdate = function keyUpdate() {
   // keyboard.update();
-  if ( keyboard.pressed("up") ) {
-    pressNextItem();
+  if ( this.keyboard.pressed("up") ) {
+    this.pressNextItem();
   }
-  if ( keyboard.pressed("down") ) {
-    pressPrevItem();
+  if ( this.keyboard.pressed("down") ) {
+    this.pressPrevItem();
   }
 }
 
 // Move next/previous with limited repeat rate at 200ms
-var pressNextItem = _.throttle(function() {
-  speed = 0;
-  startTween({
-    z: objectList.position.z
+WebGLTimeTravel.prototype.pressNextItem = _.throttle(function() {
+  this.speed = 0;
+  this.startTween({
+    z: this.objectList.position.z
   }, {
-    z: getNextPos()+20
+    z: this.getNextPos()+20
   });
 }, 200, {trailing: false});
 
-var pressPrevItem = _.throttle(function() {
-  speed = 0;
-  startTween({
-    z: objectList.position.z
+WebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
+  this.speed = 0;
+  this.startTween({
+    z: this.objectList.position.z
   }, {
-    z: getPrevPos()+20
+    z: this.getPrevPos()+20
   });
 }, 200, {trailing: false});
 
-function getNextPos() {
-  var obj = objectList.children[current_object_index+1];
+WebGLTimeTravel.prototype.getNextPos = function getNextPos() {
+  var obj = this.objectList.children[this.current_object_index+1];
   if (!obj) {
-    return -objectList.children[current_object_index].position.z;
+    return -this.objectList.children[this.current_object_index].position.z;
   } else {
-    current_object_index++;
+    this.current_object_index++;
     return -obj.position.z;
   }
 }
-function getPrevPos() {
-  var obj = objectList.children[current_object_index-1];
+WebGLTimeTravel.prototype.getPrevPos = function getPrevPos() {
+  var obj = this.objectList.children[this.current_object_index-1];
   if (!obj) {
-    return -objectList.children[current_object_index].position.z;
+    return -this.objectList.children[this.current_object_index].position.z;
   } else {
-    current_object_index--;
+    this.current_object_index--;
     return -obj.position.z;
   }
 }
 
-var tween;
-function startTween(from, to) {
-  stopTween();
-  tween = new TWEEN.Tween(from)
+WebGLTimeTravel.prototype.startTween = function startTween(from, to) {
+  var self = this;
+
+  self.stopTween();
+  self.tween = new TWEEN.Tween(from)
   .to(to, 500 )
   .easing( TWEEN.Easing.Quadratic.Out )
   .onUpdate( function () {
-    objectList.position.z = this.z;
+    self.objectList.position.z = this.z;
   } )
   .onComplete( function() {
-    tween.isPlaying = false;
+    self.tween.isPlaying = false;
   })
   .start();
 
-  tween.isPlaying = true;
+  self.tween.isPlaying = true;
 }
-function stopTween() {
-  if (tween && tween.isPlaying) {
+WebGLTimeTravel.prototype.stopTween = function stopTween() {
+  if (self.tween && self.tween.isPlaying) {
     // console.log('stop tweening')
-    tween.stop();
-    tween.isPlaying = false;
+    self.tween.stop();
+    self.tween.isPlaying = false;
   }
 }
 
-function getCurrentObjectIndex() {
-  if (!objectList) return;
-  var camPos = -objectList.position.z;
-  var currentObj = objectList.children[current_object_index];
+WebGLTimeTravel.prototype.getCurrentObjectIndex = function getCurrentObjectIndex() {
+  if (!this.objectList) return;
+  var camPos = -this.objectList.position.z;
+  var currentObj = this.objectList.children[this.current_object_index];
   if (!currentObj) return;
   var currentPos = currentObj.position.z;
   var currentDis = Math.abs(camPos - currentPos);
 
-  var i = current_object_index, obj, dis;
+  var i = this.current_object_index, obj, dis;
   var dir = camPos > currentPos ? -1 : 1;
   while (true) {
-    obj = objectList.children[i+dir];
+    obj = this.objectList.children[i+dir];
     if (!obj) break;
     dis = Math.abs(obj.position.z - currentPos);
     if (dis < currentDis) {
@@ -363,54 +371,52 @@ function getCurrentObjectIndex() {
       break;
     }
   }
-  current_object_index = i;
+  this.current_object_index = i;
 }
 
-var _intervalCurrentIndex;
-var fadeout_offset = FADEOUT_DISTANCE;
-var infobox_offset = INFOBOX_RANGE_DISTANCE/2;
-function worldUpdate() {
-  if (speed !== 0) speed *= acc;
-  if (Math.abs(speed) < 0.001) speed = 0;
-  if (speed !== 0) {
-    stopTween();
+WebGLTimeTravel.prototype.worldUpdate = function worldUpdate() {
+  var self = this;
+  if (self.speed !== 0) self.speed *= self.acc;
+  if (Math.abs(self.speed) < 0.001) self.speed = 0;
+  if (self.speed !== 0) {
+    self.stopTween();
   }
 
   TWEEN.update();
 
   // calculate current object index if moving without tween
-  if ((!tween || !tween.isPlaying) && speed !== 0) {
-    if (!_intervalCurrentIndex) {
-      _intervalCurrentIndex = setInterval(getCurrentObjectIndex, 100);
+  if ((!self.tween || !self.tween.isPlaying) && self.speed !== 0) {
+    if (!self._intervalCurrentIndex) {
+      self._intervalCurrentIndex = setInterval(getCurrentObjectIndex, 100);
     }
   } else {
-    if (_intervalCurrentIndex) {
-      clearInterval(_intervalCurrentIndex);
-      _intervalCurrentIndex = null;
+    if (self._intervalCurrentIndex) {
+      clearInterval(self._intervalCurrentIndex);
+      self._intervalCurrentIndex = null;
     }
   }
 
-  if (objectList) {
+  if (self.objectList) {
     // move objects
-    objectList.position.z += speed;
+    self.objectList.position.z += self.speed;
 
     // bounce on min/max distance
-    if (objectList.position.z < 0) {
-      objectList.position.z = 0;
-      speed *= -0.5;
+    if (self.objectList.position.z < 0) {
+      self.objectList.position.z = 0;
+      self.speed *= -0.5;
     }
-    if (objectList.position.z > -dist-40) {
-      objectList.position.z = -dist-40;
-      speed *= -0.2;
+    if (self.objectList.position.z > -self.dist-40) {
+      self.objectList.position.z = -self.dist-40;
+      self.speed *= -0.2;
     }
 
     var boxShowObj;
-    objectList.children.forEach(function(obj) {
+    self.objectList.children.forEach(function(obj) {
       // check if object near viewer
-      var posz =  obj.position.z + objectList.position.z;
-      var opacity = posz <= 0+fadeout_offset ? 1 : Math.max(0, 1-(posz-fadeout_offset)/FADEOUT_DISTANCE);
+      var posz =  obj.position.z + self.objectList.position.z;
+      var opacity = posz <= 0+self.fadeout_offset ? 1 : Math.max(0, 1-(posz-self.fadeout_offset)/self.FADEOUT_DISTANCE);
       // check if needed to update info box
-      var updatebox = posz > INFOBOX_RANGE_CENTER_POSITION-infobox_offset && posz < INFOBOX_RANGE_CENTER_POSITION+infobox_offset ;
+      var updatebox = posz > self.INFOBOX_RANGE_CENTER_POSITION-self.infobox_offset && posz < self.INFOBOX_RANGE_CENTER_POSITION+self.infobox_offset ;
       // keep object to send image info to show in info box later at the bottom of this function
       if(updatebox && obj.imgObj){
         boxShowObj = obj;
@@ -449,6 +455,7 @@ function worldUpdate() {
   }
 }
 
+// END - WebGLTimeTravel
 
 
 
@@ -467,11 +474,11 @@ $(function() {
   $('#controller')
   .on('click', '.next-btn', function(e) {
     e.preventDefault();
-    pressNextItem();
+    TT.pressNextItem();
   })
   .on('click', '.prev-btn', function(e) {
     e.preventDefault();
-    pressPrevItem();
+    TT.pressPrevItem();
   });
 
   $('.toggle-year-range').on('click', function(e) {
@@ -502,7 +509,7 @@ $(function() {
     updateInfoBox({ show: false });
     e.preventDefault();
     $('.spinner').removeClass('hidden');
-    resetTimeline();
+    TT.resetTimeline();
     searchResults = [];
 
     countSearchResultUp(0, false);
@@ -583,7 +590,7 @@ $(function() {
               // year mark
               if (typeof year === 'number' && year != year_mark) {
                 year_mark = year;
-                addOnTimeline(createTextMarker(year), 90, 30);
+                TT.addOnTimeline(TT.createTextMarker(year), 90, 30);
               }
 
               var w = +image.MaxImageResolutionWidth || 50;
@@ -592,7 +599,7 @@ $(function() {
               var size = 60;
               w2 = w > h ? size : size * ratio;
               h2 = w > h ? size * ratio : size;
-              addOnTimeline(createSprite(image, {width: w2, height: h2, service: 'getty'}));
+              TT.addOnTimeline(TT.createSprite(image, {width: w2, height: h2, service: 'getty'}));
             });
 
             searchResults = searchResults.concat(itemList);
@@ -680,3 +687,333 @@ function values(obj) {
 function clone(obj) {
   return JSON.parse(JSON.stringify(obj));
 };
+
+
+
+
+
+// BEGIN - NoWebGLTimeTravel
+var NoWebGLTimeTravel = function() {
+  console.info('Compatibility mode');
+
+  var self = this;
+
+  this.FADEOUT_DISTANCE = 30;
+  this.INFOBOX_RANGE_CENTER_POSITION = 10;
+  this.INFOBOX_RANGE_DISTANCE = 76;
+  this.STAGE_TOP = 30;
+
+  this.speed = 0;
+  this.acc = 0.97;
+  this.dist = 0;
+
+  this.keyboard = new THREEx.KeyboardState();
+  this.mouse = { x: 0, y: 0 };
+
+  // this.camera
+  // this.scene
+  // this.renderer
+  // this.projector
+  // this.tween
+  // this.objectList
+
+  // this.current_object_index
+  // this._intervalCurrentIndex
+
+  this.fadeout_offset = this.FADEOUT_DISTANCE;
+  this.infobox_offset = this.INFOBOX_RANGE_DISTANCE/2;
+  $('html').addClass('no-webgl');
+  var $stage = $('#stage');
+  this.stage = $('<div class="container">');
+  $stage.append(this.stage);
+
+
+  $(window).on('keydown', function(e) {
+    // Up
+    if (e.keyCode === 38) {
+      self.pressNextItem();
+    }
+    // Down
+    if (e.keyCode === 40) {
+      self.pressPrevItem();
+    }
+  });
+};
+
+NoWebGLTimeTravel.prototype.init = function() {
+  this.objectList = [];
+  this.pos = -1;
+  this.prevFocuses = [];
+  this.focus = null;
+
+};
+
+NoWebGLTimeTravel.prototype.resetTimeline = function resetTimeline() {
+  this.init();
+  // var self = this;
+  // if (self.objectList) {
+  //   self.objectList.children.forEach(function(obj) {
+  //     self.deallocMesh(obj);
+  //     self.scene.remove(obj);
+  //   });
+  //   self.scene.remove(self.objectList);
+  // }
+  // // create new object group
+  // self.objectList = new THREE.Object3D();
+  // self.scene.add(self.objectList);
+  // self.dist = 90;
+  // self.current_object_index = 0;
+}
+
+NoWebGLTimeTravel.prototype.addOnTimeline = function addOnTimeline(obj, d1, d2) {
+  this.objectList.push(obj);
+
+  if (this.objectList.length === 1) {
+    this.pressNextItem();
+  }
+  // var self = this;
+  // self.objectList.add(obj);
+  // self.dist -= d1 || 60;
+  // obj.position.z = this.dist;
+  // self.dist -= d2 || 60;
+}
+
+NoWebGLTimeTravel.prototype.createSprite = function createSprite(imgObj, params) {
+
+  return [ 'sprite', imgObj, params ];
+
+  var sprite;
+
+  sprite = $('<div class="sprite">');
+  sprite.append(
+    $('<img>').attr('src', imgObj.UrlPreview)
+  );
+
+  // params = params || {};
+  // var texture;
+  // var sprite;
+  // var w = params.width || 50;
+  // var h = params.height || 50;
+
+  // var img = new Image();
+  // img.onload = function () {
+  //   texture.needsUpdate = true;
+  // };
+  // texture = new THREE.Texture(img);
+  // // user image proxy if needed
+  // if (params.service)
+  //   img.src = '/photo/'+params.service+'/'+encodeURIComponent(imgObj.UrlPreview);
+  // else
+  //   img.src = imgObj.UrlPreview
+  // texture.needsUpdate = true;
+
+  // var material = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true } );
+  // sprite = new THREE.Sprite( material );
+  // sprite.scale.set(w, h, 1);
+  // sprite.position.y = h/2;
+  // sprite.name = params.name || '';
+  // sprite.imgObj = imgObj;
+  // sprite.img = img;
+  // sprite.texture = texture;
+  return sprite;
+}
+
+NoWebGLTimeTravel.prototype.createTextMarker = function createTextMarker(str) {
+
+  return [ 'text', str ];
+
+  var group;
+
+  group = $('<div class="textmarker">');
+  group.append(
+    $('<span>').text(str)
+  );
+
+  // var group = new THREE.Object3D();
+  // var text = this.createText( str, {
+  //     fontsize: 64,
+  //     fontface: 'Abel',
+  //     backgroundColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
+  //     borderColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
+  //   } );
+  // text.position.x = 37 - 24;
+  // text.position.y = -10 + 15;
+  // text.position.z = 0;
+
+  // var line = this.createPlane({ width: 100, height: 3, position: { x: 0, y: .1, z: 0 }, rotation: { x: Math.PI/2 }, color: 0x000000});
+
+  // group.add(text);
+  // group.add(line);
+  return group;
+}
+
+NoWebGLTimeTravel.prototype.createElement = function(type, data, params) {
+  var el;
+  if (type === 'sprite') {
+
+    el = $('<div class="tt-item sprite">');
+    el.append(
+      $('<img>')
+      .one('load', function() {
+        $(this)
+        .animate({
+          opacity: 1
+        }, 100)
+        .parent().css({
+          marginLeft: -this.width/2 + 'px',
+          marginTop: -this.height+'px'
+        });
+      })
+      .attr('src', data.UrlPreview)
+      .css('opacity', 0)
+    );
+
+  } else if (type === 'text') {
+
+    el = $('<div class="tt-item textmarker">');
+    el.append(
+      $('<span class="text">')
+      .text(data)
+    );
+    setTimeout(function() {
+      el.css({
+        marginLeft: -el.width()/2 + 'px',
+        marginTop: -el.height() + 'px'
+      });
+    }, 1);
+
+  }
+  return el;
+}
+
+// Move next/previous with limited repeat rate at 200ms
+NoWebGLTimeTravel.prototype.pressNextItem = _.throttle(function() {
+  var self = this;
+  if (self.pos >= self.objectList.length - 1) return;
+  if (self.focus) self.prevFocuses.push(self.focus);
+
+  self.pos++;
+  var item = self.objectList[self.pos];
+
+  self.focus = {
+    id: self.pos,
+    type: item[0],
+    data: item[1],
+    options: item[2],
+    el: self.createElement(item[0], item[1], item[2])
+  };
+
+  self.stage.append(self.focus.el);
+
+  // Insert new one
+  self.focus.el.css({
+    top: 0
+  })
+  .animate({
+    top: '65%'
+  }, 100, function() {
+
+    // show image info
+    if(self.focus.type === 'sprite'){
+      updateInfoBox({
+        show: true,
+        id: self.focus.data.ImageId,
+        title: self.focus.data.Title,
+        artist: self.focus.data.Artist,
+        caption: self.focus.data.Caption
+      });
+    }
+
+  });
+
+  // Remove old ones
+  for (var i in self.prevFocuses) {
+    var p = self.prevFocuses[i];
+    p.el.animate({
+      top: 100*(self.prevFocuses.length-i+1)+'%'
+    }, 100, function() {
+      p.el.remove();
+      setTimeout(function() {
+        self.prevFocuses.length = 0;
+      })
+    });
+  }
+
+  updateInfoBox({
+    show: false
+  });
+}, 50, {trailing: false});
+
+NoWebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
+  var self = this;
+  if (self.pos <= 0) return;
+  if (self.focus) self.prevFocuses.push(self.focus);
+
+  self.pos--;
+  var item = self.objectList[self.pos];
+
+  self.focus = {
+    id: self.pos,
+    type: item[0],
+    data: item[1],
+    options: item[2],
+    el: self.createElement(item[0], item[1], item[2])
+  };
+
+  self.stage.append(self.focus.el);
+
+  // Insert new one
+  self.focus.el.css({
+    top: '200%'
+  })
+  .animate({
+    top: '65%'
+  }, 100, function() {
+
+    // show image info
+    if(self.focus.type === 'sprite'){
+      updateInfoBox({
+        show: true,
+        id: self.focus.data.ImageId,
+        title: self.focus.data.Title,
+        artist: self.focus.data.Artist,
+        caption: self.focus.data.Caption
+      });
+    }
+
+  });
+
+  // Remove old ones
+  for (var i in self.prevFocuses) {
+    var p = self.prevFocuses[i];
+    p.el.animate({
+      top: 100*(-i)+'%'
+    }, 100, function() {
+      p.el.remove();
+      setTimeout(function() {
+        self.prevFocuses.length = 0;
+      })
+    });
+  }
+
+  updateInfoBox({
+    show: false
+  });
+}, 50, {trailing: false});
+
+
+// END - NoWebGLTimeTravel
+
+
+
+
+// Start App
+var TT;
+if ($('html').is('.ie8')) {
+  TT = new NoWebGLTimeTravel();
+} else {
+  TT = new WebGLTimeTravel();
+}
+
+TT.init();
+

@@ -1,4 +1,12 @@
-html
+//if IE 8
+    <html lang="en" class="ie8">
+//if IE 9
+    <html lang="en" class="ie9">
+//if IE 10
+    <html lang="en" class="ie10">
+//[if !IE]><!
+html(lang="en")
+    //<![endif]
   head
     // meta tags for facebook story
     meta(property="og:site_name", content="Time Travel" )
@@ -8,7 +16,7 @@ html
     meta(property="og:type", content="website")
     meta(property="og:url", content="http://timetravel-gettyimages.jp")
     // end meta tags
-    
+
     link(href='http://fonts.googleapis.com/css?family=Abel', rel='stylesheet', type='text/css')
     title Time Travel
     link(rel="stylesheet", href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css")
@@ -22,7 +30,7 @@ html
     script(src="//js.leapmotion.com/leap-0.4.1.min.js")
     //<![endif]
     script(src="//cdnjs.cloudflare.com/ajax/libs/async/1.22/async.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.49/jquery.form.min.js")
     script(src="//code.jquery.com/ui/1.10.4/jquery-ui.js")
     script(src="/public/js/jquery.leanModal.min.js")
@@ -73,6 +81,9 @@ html
         left: 50%;
         width: 400px;
         margin-left: -200px;
+
+        bottom: auto !important;
+        top: 68% !important;
       }
 
       header {
@@ -213,11 +224,14 @@ html
       .social-header {
         position: absolute;
         width: 150px;
-        
+
         z-index: 100;
-        
+
         right: 10px;
         top: 25px;
+      }
+      .status .spinner {
+        margin-left: 10px;
       }
       .loading-text.hidden,
       .result-text.hidden {
@@ -230,7 +244,7 @@ html
       .result-text {
         /*text-align: right;*/
         float: left;
-        margin-left: 24px;
+        margin-left: 30px;
       }
       .result-text .count {
         color: #ED1C24;
@@ -511,6 +525,10 @@ html
         .footer {
           display: none;
         }
+        .status {
+          top: 50px;
+          left: 5%;
+        }
         h1 {
           display: none;
           position: absolute;
@@ -598,14 +616,30 @@ html
         }
       }
 
-      @media only screen and (max-height: 600px) {
+
+      @media only screen and (max-height: 720px) and (min-width: 640px) {
+
+        #info-box {
+          width: 600px;
+          margin-left: -300px;
+        }
+      }
+      @media only screen and (max-height: 600px) and (min-width: 640px) {
+
+        #info-box {
+          width: 800px;
+          margin-left: -400px;
+        }
+      }
+
+      @media only screen and (max-height: 600px) and (max-width: 840px), only screen and (max-width: 480px), {
 
         #info-box {
           margin-left: 0;
           left: 20px;
           right: 20px;
           width: auto;
-          height: 140px;
+          height: 110px;
           bottom: 10px;
           overflow: auto;
         }
@@ -625,8 +659,37 @@ html
       }
 
 
+      .no-webgl #stage {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+      }
+      .no-webgl #stag > .container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+      .no-webgl .tt-item {
+        position: absolute;
+        left: 50%;
+      }
+      .no-webgl .tt-item.textmarker .text {
+        font-size: 50px;
+        color: #333;
+        border-bottom: 6px solid #ED1C24;
+        padding: 0 10px;
+      }
+      .no-webgl #info-box {
+        bottom: auto !important;
+        top: 68% !important;
+      }
+
+
   body
-    #fb-root    
+    #fb-root
     script.
       window.fbAsyncInit = function() {
         FB.init({
@@ -679,7 +742,7 @@ html
       //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       | 1<sup>st</sup> prize from&nbsp;
       a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
-    
+
     #controller.hidden
       a.next-btn(title="Arrow Up")
         img(src="/public/images/keyboard-up.png")
@@ -785,4 +848,4 @@ html
         }
       }
 
-    
+

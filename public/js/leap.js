@@ -8,10 +8,7 @@ var walkState='UP';
 var walkCount=0;
 
 // LeapJS is available on IE10+
-if (!Leap) {
-  return;
-}
-Leap.loop({enableGestures: true}, function(frame) {
+Leap && Leap.loop({enableGestures: true}, function(frame) {
   var ids = {};
   var hands = frame.hands;
   var pointables = frame.pointables;
