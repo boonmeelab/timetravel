@@ -199,6 +199,7 @@ html(lang="en")
         padding: 5px 5px;
         outline: none;
         margin: 10px 0 0;
+        -webkit-appearance: none;
       }
       input[name='query']:focus {
         background: white;
@@ -209,7 +210,7 @@ html(lang="en")
       }
       .status {
         position: relative;
-        width: 240px;
+        width: 160px;
         margin: 0 auto;
 
         position: absolute;
@@ -346,7 +347,7 @@ html(lang="en")
       }
       .profile-main {
         float: left;
-        width: 400px;
+        width: 500px;
       }
       .profile-pic {
         display: block;
@@ -478,8 +479,9 @@ html(lang="en")
           left: 25px;
         }
         .status {
-          top: 100px;
-          left: 25px;
+          top: 70px;
+          left: auto;
+          right: 10px;
         }
       }
 
@@ -526,6 +528,10 @@ html(lang="en")
           display: none;
         }
         .status {
+          top: 50px;
+          left: 50%;
+        }
+        .social-header {
           top: 50px;
           left: 5%;
         }
@@ -581,22 +587,26 @@ html(lang="en")
         .option-active #year-range {
           display: block;
           position: absolute;
+          z-index: 200;
           top: 50px;
           right: 0;
           left: 0;
-          margin-top: 10px;
 
           width: 100%;
 
+          margin-top: 0;
+          padding-top: 10px;
           padding-bottom: 20px;
           background: white;
           border-bottom: 1px solid #ddd;
         }
         #year-range-label {
           left: 10%;
+          top: 10px;
         }
         #year-range-text {
           left: 20%;
+          top: 10px;
         }
         #controller {
           margin-left: 0;
@@ -636,7 +646,7 @@ html(lang="en")
         }
       }
 
-      @media only screen and (max-height: 600px) and (max-width: 840px), only screen and (max-width: 480px), {
+      @media only screen and (max-height: 600px) and (max-width: 840px), only screen and (max-width: 480px) {
 
         #info-box {
           margin-left: 0;
@@ -691,7 +701,6 @@ html(lang="en")
         top: 68% !important;
       }
 
-
   body
     #fb-root
     script.
@@ -739,13 +748,10 @@ html(lang="en")
 
     center.footer
       a(href="#tourModal", rel="leanModal") Take a Tour
-      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       a(href="#aboutusModal", rel="leanModal") About the Creator
-      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
       //- a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
-      //- | &nbsp;&nbsp;|&nbsp;&nbsp;
-      | 1<sup>st</sup> prize from&nbsp;
-      a(href="http://www.photohackday.org", target="_black") Photo Hack Day 5
+      a(href="http://www.photohackday.org", target="_black") 1<sup>st</sup> prize from Photo Hack Day 5
+      a(href="http://api.gettyimages.com/", target="_black") Powered by Connect API
 
     #controller.hidden
       a.next-btn(title="Arrow Up")
@@ -813,14 +819,14 @@ html(lang="en")
           li
             .profile-pic.profile-pic-rapee
             .profile-main
-              h3 <a href='https://github.com/rapee', target='_blank'>Rapee Suveeranont</a>, Developer
-              p Full-stack developer with wide range of skills in game, web and mobile application. He also draws, runs and travels. Rapee wants to build world-class products that people love to use.
+              h3 <a href='http://www.linkedin.com/in/rapee', target='_blank'>Rapee Suveeranont</a>, Developer
+              p Full-stack developer with wide range of skills in game, interactive, web and mobile application. He also draws, runs and travels.
 
           li
             .profile-pic.profile-pic-yoonjo
             .profile-main
-              h3 Shin Yoonjo, Designer
-              p Web director specialized in UX, working in the biggest e-commerce company in Japan. Violinist and dancer during free time. She studied psychology in Carnegie Mellon University and went on pursuing a Master’s degree in Interactive Telecommunications Program in New York University.
+              h3 <a href='https://www.linkedin.com/in/yoonjoshin', taget='_blank'>Shin Yoonjo</a>, Designer
+              p Web director specialized in UX. Yoonjo studied and worked in 4 different countries. She is also an armature dancer and violinist.
 
           li
             .profile-pic.profile-pic-thiti
