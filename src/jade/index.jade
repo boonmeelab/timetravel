@@ -384,17 +384,32 @@ html(lang="en")
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 10px 20px;
+        padding: 5px 20px;
         background: #333;
         color: #ccc;
       }
       .footer a {
         margin-right: 15px;
         color: #ccc;
+        vertical-align: middle;
       }
       .footer a:hover {
         color: #ED1C24;
       }
+      a.connect-logo {
+        display: inline-block;
+        width: 80px;
+        height: 24px;
+        margin-left: 20px;
+        background-image: url("../public/images/connect-logo.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: -80px 0;
+      }
+      a.connect-logo:hover {
+        background-position: 0 0;
+      }
+
       #lean_overlay {
         position: fixed;
         z-index:9999;
@@ -751,7 +766,7 @@ html(lang="en")
       a(href="#aboutusModal", rel="leanModal") About the Creator
       //- a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
       a(href="http://www.photohackday.org", target="_black") 1<sup>st</sup> prize from Photo Hack Day 5
-      a(href="http://api.gettyimages.com/", target="_black") Powered by Connect API
+      a.connect-logo(href="http://api.gettyimages.com/", target="_black", alt="Powered by Connect API")
 
     #controller.hidden
       a.next-btn(title="Arrow Up")
