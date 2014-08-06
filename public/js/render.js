@@ -707,8 +707,8 @@ var NoWebGLTimeTravel = function() {
   this.acc = 0.97;
   this.dist = 0;
 
-  this.keyboard = new THREEx.KeyboardState();
-  this.mouse = { x: 0, y: 0 };
+  // this.keyboard = new THREEx.KeyboardState();
+  // this.mouse = { x: 0, y: 0 };
 
   // this.camera
   // this.scene
@@ -848,13 +848,15 @@ NoWebGLTimeTravel.prototype.createTextMarker = function createTextMarker(str) {
 }
 
 NoWebGLTimeTravel.prototype.createElement = function(type, data, params) {
-  var el;
+  var el, img;
   if (type === 'sprite') {
 
     el = $('<div class="tt-item sprite">');
-    el.append(
-      $('<img>')
-      .one('load', function() {
+    img = $('<img/>').css('opacity', 0);
+    el.append(img);
+
+    setTimeout(function() {
+      img.imageLoad(function() {
         $(this)
         .animate({
           opacity: 1
@@ -865,16 +867,12 @@ NoWebGLTimeTravel.prototype.createElement = function(type, data, params) {
         });
       })
       .attr('src', data.UrlPreview)
-      .css('opacity', 0)
-    );
+    }, 1);
 
   } else if (type === 'text') {
 
-    el = $('<div class="tt-item textmarker">');
-    el.append(
-      $('<span class="text">')
-      .text(data)
-    );
+    el = $('<div class="tt-item textmarker">'+data+'</div>');
+
     setTimeout(function() {
       el.css({
         marginLeft: -el.width()/2 + 'px',
@@ -884,6 +882,16 @@ NoWebGLTimeTravel.prototype.createElement = function(type, data, params) {
 
   }
   return el;
+}
+
+$.fn.imageLoad = function(fn){
+    this.load(fn);
+    this.each( function() {
+        if ( this.complete && this.naturalWidth !== 0 ) {
+            $(this).trigger('load');
+        }
+    });
+    return this;
 }
 
 // Move next/previous with limited repeat rate at 200ms
@@ -929,14 +937,16 @@ NoWebGLTimeTravel.prototype.pressNextItem = _.throttle(function() {
   // Remove old ones
   for (var i in self.prevFocuses) {
     var p = self.prevFocuses[i];
-    p.el.animate({
+    p.el && p.el.animate({
       top: 100*(self.prevFocuses.length-i+1)+'%'
-    }, 100, function() {
-      p.el.remove();
-      setTimeout(function() {
-        self.prevFocuses.length = 0;
-      })
-    });
+    }, 100, (function(el) {
+      return function() {
+        el && el.remove();
+        setTimeout(function() {
+          self.prevFocuses.length = 0;
+        })
+      };
+    })(p.el));
   }
 
   updateInfoBox({
@@ -986,14 +996,16 @@ NoWebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
   // Remove old ones
   for (var i in self.prevFocuses) {
     var p = self.prevFocuses[i];
-    p.el.animate({
+    p.el && p.el.animate({
       top: 100*(-i)+'%'
-    }, 100, function() {
-      p.el.remove();
-      setTimeout(function() {
-        self.prevFocuses.length = 0;
-      })
-    });
+    }, 100, (function(el) {
+      return function() {
+        el && el.remove();
+        setTimeout(function() {
+          self.prevFocuses.length = 0;
+        })
+      };
+    })(p.el));
   }
 
   updateInfoBox({
@@ -1009,7 +1021,7 @@ NoWebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
 
 // Start App
 var TT;
-if ($('html').is('.ie8') || location.search.indexOf('mode=old') >= 0) {
+if (!document.addEventListener || $('html').is('.ie8') || location.search.indexOf('mode=old') >= 0) {
   TT = new NoWebGLTimeTravel();
 } else {
   TT = new WebGLTimeTravel();
