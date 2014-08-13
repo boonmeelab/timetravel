@@ -20,10 +20,17 @@ html(lang="en")
     link(href='http://fonts.googleapis.com/css?family=Abel', rel='stylesheet', type='text/css')
     title Time Travel
     link(rel="stylesheet", href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css")
+
+    //[if lte IE9 ]<!
+    script(src="//cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js")
+    //<![endif]
+
     script(src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/3.4.0/es5-shim.min.js")
     script(src="/public/js/typedarray.js")
-    //[if gt IE 8]><!
+    //[if gt IE 9]><!
     script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js")
+    script.
+      var THREE = THREE || {};
     script(src="/public/js/tween.min.js")
     script(src="/public/js/threex/OrbitControls.js")
     script(src="/public/js/threex/KeyboardState.js")
@@ -53,6 +60,24 @@ html(lang="en")
       ga('send', 'pageview');
 
     style.
+
+      /* html5doctor.com Reset v1.6.1 (http://html5doctor.com/html-5-reset-stylesheet/) - http://cssreset.com */
+      html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+      body{line-height:1}
+      article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+      nav ul{list-style:none}
+      blockquote,q{quotes:none}
+      blockquote:before,blockquote:after,q:before,q:after{content:none}
+      a{margin:0;padding:0;font-size:100%;vertical-align:baseline;background:transparent}
+      ins{background-color:#ff9;color:#000;text-decoration:none}
+      mark{background-color:#ff9;color:#000;font-style:italic;font-weight:bold}
+      del{text-decoration:line-through}
+      abbr[title],dfn[title]{border-bottom:1px dotted;cursor:help}
+      table{border-collapse:collapse;border-spacing:0}
+      hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+      input,select{vertical-align:middle}
+      /* end - html5doctor.com Reset v1.6.1 */
+
       body {
         margin: 0;
         background: #f9f9f9;
@@ -70,6 +95,10 @@ html(lang="en")
       }
       input {
         font-family: 'Abel', Helvetica, Arial;
+      }
+
+      .center {
+        text-align: center;
       }
 
       #info-box {
@@ -122,7 +151,12 @@ html(lang="en")
       }
       .ui h1,
       .ui #form-search {
-        text-align: center;
+        /*text-align: center;*/
+        float: left;
+      }
+      .ie8 .ui #form-search,
+      .ie9 .ui #form-search {
+        padding-top: 13px;
       }
       .ui .spinner {
         display: inline-block;
@@ -170,22 +204,31 @@ html(lang="en")
       }
       h1 .title .logo {
         display: inline-block;
+        float: left;
         width: 30px;
         height: 30px;
         background-repeat: repeat;
         background-image: url('/public/images/logo@2x.png');
         background-image: url('/public/images/logo.png')\9;
+        background-repeat: no-repeat;
         background-size: cover;
         vertical-align: middle;
         margin-right: 5px;
         margin-top: -5px;
       }
-      h1 .logo {
+      .ie8 h1 .title .logo,
+      .ie9 h1 .title .logo {
+        display: inline;
+        margin-top: 0;
+      }
+      h1 a.logo {
         display: inline-block;
+        float: left;
         width: 191px;
         height: 36px;
         background: url('/public/images/gettyimages.gif') no-repeat;
         background-size: cover;
+        background-repeat: no-repeat;
         vertical-align: middle;
       }
       h2 {
@@ -213,18 +256,18 @@ html(lang="en")
         display: none;
       }
       .status {
-        position: relative;
-        width: 160px;
-        margin: 0 auto;
-
         position: absolute;
         z-index: 100;
-        top: 70px;
-        left: 50%;
-        margin-left: -120px;
         left: 855px;
         top: 25px;
+        width: 160px;
+        margin-top: 0;
+        margin-bottom: 0;
         margin-left: 0;
+      }
+      .ie8 .status,
+      .ie9 .status {
+        left: 755px;
       }
       .social-header {
         position: absolute;
@@ -253,6 +296,7 @@ html(lang="en")
       }
       .result-text .count {
         color: #ED1C24;
+        padding-right: 4px;
       }
       #stage {
         position: absolute;
@@ -308,6 +352,7 @@ html(lang="en")
         width: 200px;
         vertical-align: top;
         margin-top: 15px;
+        padding-left: 10px;
         position: relative;
       }
       #year-range-label{
@@ -391,6 +436,8 @@ html(lang="en")
         padding: 5px 20px;
         background: #333;
         color: #ccc;
+        width: 100%;
+        text-align: center;
       }
       .footer a {
         margin-right: 15px;
@@ -476,14 +523,14 @@ html(lang="en")
         opacity: 0;
       }
 
-      #controller > a {
+      #controller a {
         display: block;
         width: 50px;
         cursor: pointer;
         opacity: .5;
         margin-bottom: 25px;
       }
-      #controller > a:hover {
+      #controller a:hover {
         opacity: 1;
       }
       @media only screen and (max-width: 1155px){
@@ -518,6 +565,7 @@ html(lang="en")
         h1 .logo {
           width: 96px;
           height: 18px;
+          float: left;
         }
         h1 .title {
           font-size: 18px;
@@ -614,10 +662,15 @@ html(lang="en")
           width: 100%;
 
           margin-top: 0;
+          padding-left: 0;
           padding-top: 10px;
           padding-bottom: 20px;
           background: white;
           border-bottom: 1px solid #ddd;
+        }
+        #year-range-slider {
+          margin-left: auto;
+          margin-right: auto;
         }
         #year-range-label {
           left: 10%;
@@ -691,7 +744,6 @@ html(lang="en")
         }
       }
 
-
       .no-webgl #stage {
         position: absolute;
         top: 0;
@@ -700,10 +752,18 @@ html(lang="en")
         right: 0;
         overflow: hidden;
       }
-      .no-webgl #stage > .container {
+      .no-webgl #stage .container {
         position: relative;
         width: 100%;
         height: 100%;
+      }
+      .ie8.no-webgl #stage ,
+      .ie9.no-webgl #stage {
+        position: static;
+      }
+      .ie8.no-webgl #stage .container,
+      .ie9.no-webgl #stage .container {
+        position: static;
       }
       .no-webgl .tt-item {
         position: absolute;
@@ -755,7 +815,7 @@ html(lang="en")
           input(type='hidden',id='startdate',name='startdate')
           input(type='hidden',id='enddate',name='enddate')
           input(type='hidden', name='sortby', value='MostPopular')
-        center#year-range
+        #year-range
           #year-range-slider
           #year-range-label Year
           #year-range-text
@@ -765,7 +825,7 @@ html(lang="en")
       .social-header
         .fb-like(data-href="http://timetravel-gettyimages.jp", data-layout="button_count", data-action="like", data-show-faces="true", data-share="true")
 
-    center.footer
+    .footer
       a(href="#tourModal", rel="leanModal") Take a Tour
       a(href="#aboutusModal", rel="leanModal") About the Creator
       //- a(href="https://github.com/boonmeelab/timetravel", target="_black") Github
@@ -788,7 +848,7 @@ html(lang="en")
 
     #tourModal.modal
       div
-        center
+        .center
           h2 Guideline
           p Welcome to Time Travel &mdash; a time machine on the Internet!
         p Time Travel will take you to explore the world of history related to your interesting topics.
@@ -796,7 +856,7 @@ html(lang="en")
         p You can control our time travel by using a keyboard or leap motion if you have one. <br>So, just plug it in to your computer and you are ready to go!
         br
         #controlGuideLeft
-          center
+          .center
             h3 Keyboard
             table
               tr
@@ -808,7 +868,7 @@ html(lang="en")
                   img(src="/public/images/keyboard-down.png", style="margin: 5px 10px;")
                 td Backward
         #controlGuideRight
-          center
+          .center
             h3 Leap Motion
             table
               tr
@@ -826,7 +886,7 @@ html(lang="en")
             div Walk through time!
     #aboutusModal.modal
       div
-        center
+        .center
           h2 About the Creator
         ul.profile-list
           li

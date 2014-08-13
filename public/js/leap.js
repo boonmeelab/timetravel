@@ -6,6 +6,7 @@ var acc = 0.97; // share with render.js
 var handState={};
 var walkState='UP';
 var walkCount=0;
+var Leap;
 
 // LeapJS is available on IE10+
 Leap && Leap.loop({enableGestures: true}, function(frame) {

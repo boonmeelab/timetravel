@@ -194,7 +194,7 @@ WebGLTimeTravel.prototype.createTextMarker = function createTextMarker(str) {
       fontsize: 64,
       fontface: 'Abel',
       backgroundColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
-      borderColor: {r:237, g:28, b:36, a:1.0},//0xed1c24
+      borderColor: {r:237, g:28, b:36, a:1.0}//0xed1c24
     } );
   text.position.x = 37 - 24;
   text.position.y = -10 + 15;
@@ -611,8 +611,10 @@ $(function() {
             // $('.loading-text').addClass('hidden');
             // $('.result-text').removeClass('hidden').find('.count').text(searchResults.length);
         })
-        .fail(function(xhr){
+        .fail(function(xhr, text, e){
           console.error(xhr);
+          console.error(text);
+          console.error(e);
         })
         .always(function() {
           cb();
