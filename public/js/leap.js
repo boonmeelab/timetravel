@@ -1,4 +1,4 @@
-
+if(!console) {console={}; console.log = function(){};}
 var posx = 0;
 var scale = 1;
 var speed = 0; // share with render.js

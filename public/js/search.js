@@ -1,4 +1,5 @@
 $(function() {
+	if(!console) {console={}; console.log = function(){};}
 	var requestId = null;
 	var searchResults;
 
