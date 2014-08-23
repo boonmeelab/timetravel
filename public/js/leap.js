@@ -1,4 +1,5 @@
-if(!console) {console={}; console.log = function(){};}
+if(!window.console) {console={}; console.log = function(){}; console.info = function(){};}
+
 var posx = 0;
 var scale = 1;
 var speed = 0; // share with render.js

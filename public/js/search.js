@@ -1,5 +1,5 @@
 $(function() {
-	if(!console) {console={}; console.log = function(){};}
+	if(!window.console) {console={}; console.log = function(){}; console.info = function(){};}
 	var requestId = null;
 	var searchResults;
 

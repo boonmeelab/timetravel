@@ -1,4 +1,4 @@
-if(!console) {console={}; console.log = function(){};}
+if(!window.console) {console={}; console.log = function(){}; console.info = function(){};}
 // BEGIN - WebGLTimeTravel
 var WebGLTimeTravel = function() {
   console.info('Normal mode');
