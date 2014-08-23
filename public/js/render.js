@@ -71,10 +71,17 @@ WebGLTimeTravel.prototype.init = function init() {
   var self = this;
   window.addEventListener( 'resize', function() { self.onWindowResize.apply(self, arguments); }, false );
 
-  if (window.WebGLRenderingContext)
-    self.renderer = new THREE.WebGLRenderer( { alpha: true } );
-  else
+  if (window.WebGLRenderingContext) {
+    try {
+      self.renderer = new THREE.WebGLRenderer( { alpha: true } );
+    } catch (e) {
+      self.renderer = new THREE.CanvasRenderer( { alpha: true } );
+    }
+  } else {
     self.renderer = new THREE.CanvasRenderer( { alpha: true } );
+  }
+
+  if (!self.renderer) throw new Error('Cannot initialize renderer');
 
   // renderer.setClearColor( 0xeeeeee, 1);
   self.renderer.setClearColor( 0x000000, 0);
