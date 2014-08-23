@@ -1024,8 +1024,12 @@ NoWebGLTimeTravel.prototype.pressPrevItem = _.throttle(function() {
 // Start App
 var TT;
 if (!document.addEventListener || $('html').is('.ie8') || location.search.indexOf('mode=old') >= 0) {
+  console.log('ie8: ',$('html').is('.ie8'));
+  console.log('ie9: ',$('html').is('.ie9'));
   TT = new NoWebGLTimeTravel();
 } else {
+  console.log('ie8: ',$('html').is('.ie8'));
+  console.log('ie9: ',$('html').is('.ie9'));
   TT = new WebGLTimeTravel();
 }
 
