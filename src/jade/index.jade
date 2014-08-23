@@ -1,4 +1,12 @@
+//if IE 8
+    <html lang="en" class="ie8">
+//if IE 9
+    <html lang="en" class="ie9">
+//if IE 10
+    <html lang="en" class="ie10">
+//[if !IE]><!
 html(lang="en")
+    //<![endif]
   head
     meta(http-equiv="X-UA-Compatible", content="IE=Edge")
     // meta tag compatability mode for IE
@@ -789,15 +797,8 @@ html(lang="en")
         bottom: auto !important;
         top: 68% !important;
       }
-//if IE 8
-  <body class="ie8">
-//if IE 9
-  <body class="ie9">
-//if IE 10
-  <body class="ie10">
-//[if !IE]><!
+
   body
-//<![endif]
     #fb-root
     script.
       window.fbAsyncInit = function() {
